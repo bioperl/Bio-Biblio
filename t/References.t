@@ -8,37 +8,37 @@ our @modules;
 BEGIN {
     use lib '.';
     use Bio::Root::Test;
-    
+
     test_begin(-tests => 537);
-	
-	@modules = qw(
-		Bio::Biblio::Article
-		Bio::Biblio::Book
-		Bio::Biblio::BookArticle
-		Bio::Biblio::Journal
-		Bio::Biblio::JournalArticle
-		Bio::Biblio::MedlineArticle
-		Bio::Biblio::MedlineBook
-		Bio::Biblio::MedlineBookArticle
-		Bio::Biblio::MedlineJournal
-		Bio::Biblio::MedlineJournalArticle
-		Bio::Biblio::Organisation
-		Bio::Biblio::Patent
-		Bio::Biblio::Person
-		Bio::Biblio::Proceeding
-		Bio::Biblio::Provider
-		Bio::Biblio::Ref
-		Bio::Biblio::Service
-		Bio::Biblio::TechReport
-		Bio::Biblio::Thesis
-		Bio::Biblio::WebResource
-		Bio::Biblio::PubmedArticle
-		Bio::Biblio::PubmedBookArticle
-		Bio::Biblio::PubmedJournalArticle);
-	
-	foreach my $module (@modules) {
-		use_ok($module);
-	}
+
+    @modules = qw(
+        Bio::Biblio::Article
+        Bio::Biblio::Book
+        Bio::Biblio::BookArticle
+        Bio::Biblio::Journal
+        Bio::Biblio::JournalArticle
+        Bio::Biblio::MedlineArticle
+        Bio::Biblio::MedlineBook
+        Bio::Biblio::MedlineBookArticle
+        Bio::Biblio::MedlineJournal
+        Bio::Biblio::MedlineJournalArticle
+        Bio::Biblio::Organisation
+        Bio::Biblio::Patent
+        Bio::Biblio::Person
+        Bio::Biblio::Proceeding
+        Bio::Biblio::Provider
+        Bio::Biblio::Ref
+        Bio::Biblio::Service
+        Bio::Biblio::TechReport
+        Bio::Biblio::Thesis
+        Bio::Biblio::WebResource
+        Bio::Biblio::PubmedArticle
+        Bio::Biblio::PubmedBookArticle
+        Bio::Biblio::PubmedJournalArticle);
+
+    foreach my $module (@modules) {
+        use_ok($module);
+    }
 }
 
 my $verbose = test_debug();
@@ -48,7 +48,7 @@ my ($citation, $provider);
 
 print "Testing 'Bio::Biblio::->new() ...'\n" if $verbose;
 foreach my $object (@modules) {
-	ok defined ($biblio = $object->new());
+    ok defined ($biblio = $object->new());
 }
 
 my @scalar_methods_for_ref =
@@ -286,22 +286,22 @@ foreach my $method (@scalar_methods_for_ref,
                     @scalar_methods_for_medlinearticle,
                     @scalar_methods_for_medlinejournalarticle) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::MedlineJournalArticle->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_ref,
                     @other_methods_for_article,
                     @other_methods_for_journalarticle,
                     @other_methods_for_medlinearticle,
                     @other_methods_for_medlinejournalarticle) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 my ($me) = Bio::Biblio::Person->new(-lastname => 'me');
 my ($you) = Bio::Biblio::Person->new(-lastname => 'you');
@@ -315,11 +315,11 @@ is ${ $citation->contributors }[1]->lastname, 'you', "get contributors";
 
 use Bio::Annotation::DBLink;
 my $link1 = Bio::Annotation::DBLink->new(-database => 'here',
-				        -primary_id => '001'
-				        );
+                                         -primary_id => '001'
+                                        );
 my $link2 = Bio::Annotation::DBLink->new(-database => 'there',
-				        -primary_id => '002'
-				        );
+                                         -primary_id => '002'
+                                        );
 
 ok $citation->add_cross_reference ($link1), "add_cross_reference 1";
 ok $citation->add_cross_reference ($link2), "add_cross_reference 2";
@@ -340,22 +340,22 @@ foreach my $method (@scalar_methods_for_ref,
                     @scalar_methods_for_medlinearticle,
                     @scalar_methods_for_medlinebookarticle) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::MedlineBookArticle->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_ref,
                     @other_methods_for_article,
                     @other_methods_for_bookarticle,
                     @other_methods_for_medlinearticle,
                     @other_methods_for_medlinebookarticle) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 
 
@@ -370,20 +370,20 @@ foreach my $method (@scalar_methods_for_ref,
                     @scalar_methods_for_book,
                     @scalar_methods_for_medlinebook) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::MedlineBook->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_ref,
                     @other_methods_for_book,
                     @other_methods_for_medlinebook) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 
 #
@@ -396,19 +396,19 @@ $count = 1;
 foreach my $method (@scalar_methods_for_journal,
                     @scalar_methods_for_medlinejournal) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::MedlineJournal->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_journal,
                     @other_methods_for_medlinejournal) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 
 #
@@ -420,18 +420,18 @@ $citation = Bio::Biblio::Patent->new();
 $count = 1;
 foreach my $method (@scalar_methods_for_patent) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::Patent->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_patent) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 
 #
@@ -443,18 +443,18 @@ $citation = Bio::Biblio::WebResource->new();
 $count = 1;
 foreach my $method (@scalar_methods_for_webresource) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::WebResource->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_webresource) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
 
 
@@ -468,15 +468,15 @@ $count = 1;
 foreach my $method (@scalar_methods_for_provider,
                     @scalar_methods_for_person) {
     $str = 'string' . ($count++);
-	is $provider->$method ($str), $str, "set '$method'";
-	is $provider->$method(), $str, "get '$method'";
+    is $provider->$method ($str), $str, "set '$method'";
+    is $provider->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::Person->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $provider->$method(), $args[$i+1], $method;
+    is $provider->$method(), $args[$i+1], $method;
 }
 
 #
@@ -489,15 +489,15 @@ $count = 1;
 foreach my $method (@scalar_methods_for_provider,
                     @scalar_methods_for_organisation) {
     $str = 'string' . ($count++);
-	is $provider->$method ($str), $str, "set '$method'";
-	is $provider->$method(), $str, "get '$method'";
+    is $provider->$method ($str), $str, "set '$method'";
+    is $provider->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::Organisation->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $provider->$method(), $args[$i+1], $method;
+    is $provider->$method(), $args[$i+1], $method;
 }
 
 #
@@ -510,15 +510,15 @@ $count = 1;
 foreach my $method (@scalar_methods_for_provider,
                     @scalar_methods_for_organisation) {
     $str = 'string' . ($count++);
-	is $provider->$method ($str), $str, "set '$method'";
-	is $provider->$method(), $str, "get '$method'";
+    is $provider->$method ($str), $str, "set '$method'";
+    is $provider->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::Service->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $provider->$method(), $args[$i+1], $method;
+    is $provider->$method(), $args[$i+1], $method;
 }
 
 #
@@ -530,16 +530,16 @@ $citation = Bio::Biblio::PubmedJournalArticle->new();
 $count = 1;
 foreach my $method (@scalar_methods_for_pubmedarticle) {
     $str = 'string' . ($count++);
-	is $citation->$method ($str), $str, "set '$method'";
-	is $citation->$method(), $str, "get '$method'";
+    is $citation->$method ($str), $str, "set '$method'";
+    is $citation->$method(), $str, "get '$method'";
     push (@args, ("-$method" => $str));
 }
 
 ok defined ($biblio = Bio::Biblio::PubmedJournalArticle->new(@args));
 for (my $i = 0; $i < @args; $i += 2) {
     my $method = substr ($args[$i], 1);
-	is $citation->$method(), $args[$i+1], $method;
+    is $citation->$method(), $args[$i+1], $method;
 }
 foreach my $method (@other_methods_for_pubmedarticle) {
-	is $citation->$method(), undef, "get '$method'";
+    is $citation->$method(), undef, "get '$method'";
 }
