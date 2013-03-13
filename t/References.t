@@ -1,54 +1,46 @@
-# -*-Perl-*- Test Harness script for Bioperl
-# $Id$
-
+## test script for Bio::Biblio::*
 use strict;
+use warnings;
+use Bio::Annotation::DBLink;
 
-our @modules;
+use Test::More tests => 537;
+
+my @modules;
 
 BEGIN {
-    use lib '.';
-    use Bio::Root::Test;
-
-    test_begin(-tests => 537);
-
     @modules = qw(
-        Bio::Biblio::Article
-        Bio::Biblio::Book
-        Bio::Biblio::BookArticle
-        Bio::Biblio::Journal
-        Bio::Biblio::JournalArticle
-        Bio::Biblio::MedlineArticle
-        Bio::Biblio::MedlineBook
-        Bio::Biblio::MedlineBookArticle
-        Bio::Biblio::MedlineJournal
-        Bio::Biblio::MedlineJournalArticle
-        Bio::Biblio::Organisation
-        Bio::Biblio::Patent
-        Bio::Biblio::Person
-        Bio::Biblio::Proceeding
-        Bio::Biblio::Provider
-        Bio::Biblio::Ref
-        Bio::Biblio::Service
-        Bio::Biblio::TechReport
-        Bio::Biblio::Thesis
-        Bio::Biblio::WebResource
-        Bio::Biblio::PubmedArticle
-        Bio::Biblio::PubmedBookArticle
-        Bio::Biblio::PubmedJournalArticle);
-
-    foreach my $module (@modules) {
-        use_ok($module);
-    }
+                  Bio::Biblio::Article
+                  Bio::Biblio::Book
+                  Bio::Biblio::BookArticle
+                  Bio::Biblio::Journal
+                  Bio::Biblio::JournalArticle
+                  Bio::Biblio::MedlineArticle
+                  Bio::Biblio::MedlineBook
+                  Bio::Biblio::MedlineBookArticle
+                  Bio::Biblio::MedlineJournal
+                  Bio::Biblio::MedlineJournalArticle
+                  Bio::Biblio::Organisation
+                  Bio::Biblio::Patent
+                  Bio::Biblio::Person
+                  Bio::Biblio::Proceeding
+                  Bio::Biblio::Provider
+                  Bio::Biblio::Ref
+                  Bio::Biblio::Service
+                  Bio::Biblio::TechReport
+                  Bio::Biblio::Thesis
+                  Bio::Biblio::WebResource
+                  Bio::Biblio::PubmedArticle
+                  Bio::Biblio::PubmedBookArticle
+                  Bio::Biblio::PubmedJournalArticle
+                  );
+    use_ok($_) foreach (@modules);
 }
-
-my $verbose = test_debug();
 
 my ($biblio, $count, $str, @args);
 my ($citation, $provider);
 
-print "Testing 'Bio::Biblio::->new() ...'\n" if $verbose;
 foreach my $object (@modules) {
-    ok defined ($biblio = $object->new());
+    ok (defined ($biblio = $object->new()));
 }
 
 my @scalar_methods_for_ref =
@@ -276,7 +268,6 @@ my @scalar_methods_for_service =
 #
 # Bio::Biblio::MedlineJournalArticle
 #
-print "Testing Bio::Biblio::MedlineJournalArticle ...\n" if $verbose;
 $citation = Bio::Biblio::MedlineJournalArticle->new();
 @args = ();
 $count = 1;
@@ -313,7 +304,6 @@ ok $citation->add_contributor ($me), "add_contributor 1";
 ok $citation->add_contributor ($you), "add_contributor 2";
 is ${ $citation->contributors }[1]->lastname, 'you', "get contributors";
 
-use Bio::Annotation::DBLink;
 my $link1 = Bio::Annotation::DBLink->new(-database => 'here',
                                          -primary_id => '001'
                                         );
@@ -330,7 +320,6 @@ is ${ $citation->cross_references }[1]->primary_id, '002', "get cross_references
 #
 # Bio::Biblio::MedlineBookArticle
 #
-print "Testing Bio::Biblio::MedlineBookArticle ...\n" if $verbose;
 $citation = Bio::Biblio::MedlineBookArticle->new();
 @args = ();
 $count = 1;
@@ -362,7 +351,6 @@ foreach my $method (@other_methods_for_ref,
 #
 # Bio::Biblio::MedlineBook
 #
-print "Testing Bio::Biblio::MedlineBook ...\n" if $verbose;
 $citation = Bio::Biblio::MedlineBook->new();
 @args = ();
 $count = 1;
@@ -389,7 +377,6 @@ foreach my $method (@other_methods_for_ref,
 #
 # Bio::Biblio::MedlineJournal
 #
-print "Testing Bio::Biblio::MedlineJournal ...\n" if $verbose;
 $citation = Bio::Biblio::MedlineJournal->new();
 @args = ();
 $count = 1;
@@ -414,7 +401,6 @@ foreach my $method (@other_methods_for_journal,
 #
 # Bio::Biblio::Patent
 #
-print "Testing Bio::Biblio::Patent ...\n" if $verbose;
 $citation = Bio::Biblio::Patent->new();
 @args = ();
 $count = 1;
@@ -437,7 +423,6 @@ foreach my $method (@other_methods_for_patent) {
 #
 # Bio::Biblio::WebResource
 #
-print "Testing Bio::Biblio::WebResource ...\n" if $verbose;
 $citation = Bio::Biblio::WebResource->new();
 @args = ();
 $count = 1;
@@ -461,7 +446,6 @@ foreach my $method (@other_methods_for_webresource) {
 #
 # Bio::Biblio::Person
 #
-print "Testing Bio::Biblio::Person ...\n" if $verbose;
 $provider = Bio::Biblio::Person->new();
 @args = ();
 $count = 1;
@@ -482,7 +466,6 @@ for (my $i = 0; $i < @args; $i += 2) {
 #
 # Bio::Biblio::Organisation
 #
-print "Testing Bio::Biblio::Organisation ...\n" if $verbose;
 $provider = Bio::Biblio::Organisation->new();
 @args = ();
 $count = 1;
@@ -503,7 +486,6 @@ for (my $i = 0; $i < @args; $i += 2) {
 #
 # Bio::Biblio::Service
 #
-print "Testing Bio::Biblio::Service ...\n" if $verbose;
 $provider = Bio::Biblio::Service->new();
 @args = ();
 $count = 1;
@@ -524,7 +506,6 @@ for (my $i = 0; $i < @args; $i += 2) {
 #
 # Bio::Biblio::PubmedJournalArticle
 #
-print "Testing Bio::Biblio::PubmedJournalArticle ...\n" if $verbose;
 $citation = Bio::Biblio::PubmedJournalArticle->new();
 @args = ();
 $count = 1;
