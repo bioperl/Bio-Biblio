@@ -86,21 +86,30 @@ with an underscore _.
 
 
 package Bio::Biblio::IO::medlinexml;
-use vars qw(@Citations $Callback $Convert @ObjectStack @PCDataStack);
-use vars qw(%PCDATA_NAMES %SIMPLE_TREATMENT %POP_DATA_AND_PEEK_OBJ %POP_OBJ_AND_PEEK_OBJ);
-use vars qw(%POP_AND_ADD_ELEMENT %POP_AND_ADD_DATA_ELEMENT);
-
 use strict;
+use warnings;
 
 use XML::Parser;
 
-use base qw(Bio::Biblio::IO);
+use parent qw(Bio::Biblio::IO);
+
+our @Citations;
+our $Callback;
+our $Convert;
+our @ObjectStack;
+our @PCDataStack;
+our %PCDATA_NAMES;
+our %SIMPLE_TREATMENT;
+our %POP_DATA_AND_PEEK_OBJ;
+our %POP_OBJ_AND_PEEK_OBJ;
+our %POP_AND_ADD_ELEMENT;
+our %POP_AND_ADD_DATA_ELEMENT;
 
 # -----------------------------------------------------------------------------
 
 sub _initialize {
     my ($self, @args) = @_;
-    
+
     # make a hashtable from @args
     my %param = @args;
     @param { map { lc $_ } keys %param } = values %param; # lowercase keys
@@ -109,35 +118,35 @@ sub _initialize {
     # there) - changing '-key' into '_key', and making keys lowercase
     my $new_key;
     foreach my $key (keys %param) {
-	($new_key = $key) =~ s/^-/_/;
-	$self->{ lc $new_key } = $param { $key };
+        ($new_key = $key) =~ s/^-/_/;
+        $self->{ lc $new_key } = $param { $key };
     }
 
     # find the format for output - and put it into a global $Convert
     # because it will be used by the event handler who knows nothing
     # about this object
     my $result = $self->{'_result'} || 'medline2ref';
-    $result = "\L$result";	# normalize capitalization to lower case
+    $result = "\L$result";      # normalize capitalization to lower case
 
     # a special case is 'raw' when no converting module is loaded
     # and citations will be returned as a hashtable (the one which
     # is created during parsing XML file/stream)
     unless ($result eq 'raw') {
 
-	# load module with output converter - as defined in $result
-	if (defined &Bio::Biblio::IO::_load_format_module ($result)) {
-	    $Convert = "Bio::Biblio::IO::$result"->new (@args);
-	}
+        # load module with output converter - as defined in $result
+        if (defined &Bio::Biblio::IO::_load_format_module ($result)) {
+            $Convert = "Bio::Biblio::IO::$result"->new (@args);
+        }
     }
 
     # create an instance of the XML parser
     # (unless it is already there...)
     $self->{'_xml_parser'} = XML::Parser->new (Handlers => {Init  => \&handle_doc_start,
-							   Start => \&handle_start,
-							   End   => \&handle_end,
-							   Char  => \&handle_char,
-							   Final => \&handle_doc_end})
-	unless $self->{'_xml_parser'};
+                                                            Start => \&handle_start,
+                                                            End   => \&handle_end,
+                                                            Char  => \&handle_char,
+                                                            Final => \&handle_doc_end})
+        unless $self->{'_xml_parser'};
 
     # if there is an argument '-callback' then start parsing at once -
     # the registered event handlers will use 'callback' to report
@@ -147,7 +156,7 @@ sub _initialize {
     # because the event handler subroutines know nothing about this
     # object (unfortunately)
     if ($Callback = $self->{'_callback'}) {
-	$self->_parse;
+        $self->_parse;
     }
 }
 
@@ -158,20 +167,20 @@ sub _parse {
 
 
     if (defined $self->{'_file'}) {
-	$self->{'_xml_parser'}->parsefile ($self->{'_file'});
+        $self->{'_xml_parser'}->parsefile ($self->{'_file'});
     } elsif (defined $self->{'_fh'}) {
-	my $fh = $self->{'_fh'};
-	if (ref ($fh) and UNIVERSAL::isa ($fh, 'IO::Handler')) {
-	    $self->{'_xml_parser'}->parse ($fh);
-	} else {
-	    my $data;
-	    $data .= $_ while <$fh>;
-	    $self->{'_xml_parser'}->parse ($data);
-	}
+        my $fh = $self->{'_fh'};
+        if (ref ($fh) and UNIVERSAL::isa ($fh, 'IO::Handler')) {
+            $self->{'_xml_parser'}->parse ($fh);
+        } else {
+            my $data;
+            $data .= $_ while <$fh>;
+            $self->{'_xml_parser'}->parse ($data);
+        }
     } elsif ($self->{'_data'}) {
-	$self->{'_xml_parser'}->parse ($self->{'_data'});
+        $self->{'_xml_parser'}->parse ($self->{'_data'});
     } else {
-	$self->throw ("XML source to be parsed is unknown. Should be given in the new().");
+        $self->throw ("XML source to be parsed is unknown. Should be given in the new().");
     }
 
     # when parsing is done all citations have already been delivered
@@ -181,12 +190,12 @@ sub _parse {
     # start parsing other XML input without overwriting already read
     # citations from the first parser
     if (@Citations) {
-	$self->{'_citations'} = [];
-	foreach my $cit (@Citations) {
-	    push (@{ $self->{'_citations'} }, $cit);
-	    undef $cit;
-	}
-	undef @Citations;
+        $self->{'_citations'} = [];
+        foreach my $cit (@Citations) {
+            push (@{ $self->{'_citations'} }, $cit);
+            undef $cit;
+        }
+        undef @Citations;
     }
 }
 
@@ -232,200 +241,200 @@ sub next_bibref {
 # This is a list of #PCDATA elements.
 #
 %PCDATA_NAMES = (
-		 'AbstractText' => 1,
-		 'AccessionNumber' => 1,
-		 'Acronym' => 1,
-		 'Affiliation' => 1,
-		 'Agency' => 1,
-		 'ArticleTitle' => 1,
-		 'CASRegistryNumber' => 1,
-		 'CitationSubset' => 1,
-		 'Coden' => 1,
-		 'CollectionTitle' => 1,
-		 'CollectiveName' => 1,
-		 'CopyrightInformation' => 1,
-		 'Country' => 1,
-		 'DataBankName' => 1,
-		 'DateOfElectronicPublication' => 1,
-		 'Day' => 1,
-		 'Descriptor' => 1,
-		 'DescriptorName' => 1,
-		 'EndPage' => 1,
-		 'FirstName' => 1,
-		 'ForeName' => 1,
-		 'GeneralNote' => 1,
-		 'GeneSymbol' => 1,
-		 'GrantID' => 1,
-		 'Hour' => 1,
-		 'ISOAbbreviation' => 1,
-		 'ISSN' => 1,
-		 'Initials' => 1,
-		 'Issue' => 1,
-		 'Keyword' => 1,
-		 'Language' => 1,
-		 'LastName' => 1,
-		 'MedlineCode' => 1,
-		 'MedlineDate' => 1,
-		 'MedlineID' => 1,
-		 'MedlinePgn' => 1,
-		 'MedlineTA' => 1,
-		 'MiddleName' => 1,
-		 'Minute' => 1,
-		 'Month' => 1,
-		 'NameOfSubstance' => 1,
-		 'NlmUniqueID' => 1,
-		 'Note' => 1,
-		 'NumberOfReferences' => 1,
-		 'OtherID' => 1,
-		 'PMID' => 1,
-		 'PublicationType' => 1,
-		 'Publisher' => 1,
-		 'QualifierName' => 1,
-		 'RefSource' => 1,
-		 'RegistryNumber' => 1,
-		 'Season' => 1,
-		 'Second' => 1,
-		 'SpaceFlightMission' => 1,
-		 'StartPage' => 1,
-		 'SubHeading' => 1,
-		 'Suffix' => 1,
-		 'Title' => 1,
-		 'VernacularTitle' => 1,
-		 'Volume' => 1,
-		 'Year' => 1,
-		 );
+                 'AbstractText' => 1,
+                 'AccessionNumber' => 1,
+                 'Acronym' => 1,
+                 'Affiliation' => 1,
+                 'Agency' => 1,
+                 'ArticleTitle' => 1,
+                 'CASRegistryNumber' => 1,
+                 'CitationSubset' => 1,
+                 'Coden' => 1,
+                 'CollectionTitle' => 1,
+                 'CollectiveName' => 1,
+                 'CopyrightInformation' => 1,
+                 'Country' => 1,
+                 'DataBankName' => 1,
+                 'DateOfElectronicPublication' => 1,
+                 'Day' => 1,
+                 'Descriptor' => 1,
+                 'DescriptorName' => 1,
+                 'EndPage' => 1,
+                 'FirstName' => 1,
+                 'ForeName' => 1,
+                 'GeneralNote' => 1,
+                 'GeneSymbol' => 1,
+                 'GrantID' => 1,
+                 'Hour' => 1,
+                 'ISOAbbreviation' => 1,
+                 'ISSN' => 1,
+                 'Initials' => 1,
+                 'Issue' => 1,
+                 'Keyword' => 1,
+                 'Language' => 1,
+                 'LastName' => 1,
+                 'MedlineCode' => 1,
+                 'MedlineDate' => 1,
+                 'MedlineID' => 1,
+                 'MedlinePgn' => 1,
+                 'MedlineTA' => 1,
+                 'MiddleName' => 1,
+                 'Minute' => 1,
+                 'Month' => 1,
+                 'NameOfSubstance' => 1,
+                 'NlmUniqueID' => 1,
+                 'Note' => 1,
+                 'NumberOfReferences' => 1,
+                 'OtherID' => 1,
+                 'PMID' => 1,
+                 'PublicationType' => 1,
+                 'Publisher' => 1,
+                 'QualifierName' => 1,
+                 'RefSource' => 1,
+                 'RegistryNumber' => 1,
+                 'Season' => 1,
+                 'Second' => 1,
+                 'SpaceFlightMission' => 1,
+                 'StartPage' => 1,
+                 'SubHeading' => 1,
+                 'Suffix' => 1,
+                 'Title' => 1,
+                 'VernacularTitle' => 1,
+                 'Volume' => 1,
+                 'Year' => 1,
+                 );
 
 %SIMPLE_TREATMENT = (
-		     'MeshHeading' => 1,
-		     'Author' => 1,
-		     'Article' => 1,
-		     'Book' => 1,
-		     'Investigator' => 1,
-		     'Chemical' => 1,
-		     'Pagination' => 1,
-		     'MedlineJournalInfo' => 1,
-		     'JournalIssue' => 1,
-		     'Journal' => 1,
-		     'DateCreated' => 1,
-		     'DateCompleted' => 1,
-		     'DateRevised' => 1,
-		     'PubDate' => 1,
-		     'Abstract' => 1,
-		     'Grant' => 1,
-		     'CommentsCorrections' => 1,
-		     'CommentOn' => 1,
-		     'CommentIn' => 1,
-		     'ErratumFor' => 1,
-		     'ErratumIn' => 1,
-		     'OriginalReportIn' => 1,
-		     'RepublishedFrom' => 1,
-		     'RepublishedIn' => 1,
-		     'RetractionOf' => 1,
-		     'RetractionIn' => 1,
-		     'SummaryForPatientsIn' => 1,
-		     'UpdateIn' => 1,
-		     'UpdateOf' => 1,
-		     'DataBank' => 1,
-		     'KeywordList' => 1,
-		     'DeleteCitation' => 1,
-		     );
+                     'MeshHeading' => 1,
+                     'Author' => 1,
+                     'Article' => 1,
+                     'Book' => 1,
+                     'Investigator' => 1,
+                     'Chemical' => 1,
+                     'Pagination' => 1,
+                     'MedlineJournalInfo' => 1,
+                     'JournalIssue' => 1,
+                     'Journal' => 1,
+                     'DateCreated' => 1,
+                     'DateCompleted' => 1,
+                     'DateRevised' => 1,
+                     'PubDate' => 1,
+                     'Abstract' => 1,
+                     'Grant' => 1,
+                     'CommentsCorrections' => 1,
+                     'CommentOn' => 1,
+                     'CommentIn' => 1,
+                     'ErratumFor' => 1,
+                     'ErratumIn' => 1,
+                     'OriginalReportIn' => 1,
+                     'RepublishedFrom' => 1,
+                     'RepublishedIn' => 1,
+                     'RetractionOf' => 1,
+                     'RetractionIn' => 1,
+                     'SummaryForPatientsIn' => 1,
+                     'UpdateIn' => 1,
+                     'UpdateOf' => 1,
+                     'DataBank' => 1,
+                     'KeywordList' => 1,
+                     'DeleteCitation' => 1,
+                     );
 
 %POP_DATA_AND_PEEK_OBJ = (
-			  'Descriptor' => 1,
-			  'DescriptorName' => 1,
-			  'Year' => 1,
-			  'Month' => 1,
-			  'Day' => 1,
-			  'LastName' => 1,
-			  'Initials' => 1,
-			  'FirstName' => 1,
-			  'ForeName' => 1,
-			  'NameOfSubstance' => 1,
-			  'RegistryNumber' => 1,
-			  'CASRegistryNumber' => 1,
-			  'MiddleName' => 1,
-			  'NlmUniqueID' => 1,
-			  'MedlineTA' => 1,
-			  'MedlinePgn' => 1,
-			  'MedlineCode' => 1,
-			  'Country' => 1,
-			  'ISSN' => 1,
-			  'ArticleTitle' => 1,
-			  'Issue' => 1,
-			  'AbstractText' => 1,
-			  'VernacularTitle' => 1,
-			  'GrantID' => 1,
-			  'Agency' => 1,
-			  'Acronym' => 1,
-			  'MedlineDate' => 1,
-			  'NumberOfReferences' => 1,
-			  'RefSource' => 1,
-			  'DataBankName' => 1,
-			  'CopyrightInformation' => 1,
-			  'Suffix' => 1,
-			  'Note' => 1,
-			  'CollectiveName' => 1,
-			  'Hour' => 1,
-			  'Minute' => 1,
-			  'Second' => 1,
-			  'Season' => 1,
-			  'Coden' => 1,
-			  'ISOAbbreviation' => 1,
-			  'Publisher' => 1,
-			  'CollectionTitle' => 1,
-			  'DateOfElectronicPublication' => 1,
-			  'StartPage' => 1,
-			  'EndPage' => 1,
-			  'Volume' => 1,
-			  'Title' => 1,
-			  );
+                          'Descriptor' => 1,
+                          'DescriptorName' => 1,
+                          'Year' => 1,
+                          'Month' => 1,
+                          'Day' => 1,
+                          'LastName' => 1,
+                          'Initials' => 1,
+                          'FirstName' => 1,
+                          'ForeName' => 1,
+                          'NameOfSubstance' => 1,
+                          'RegistryNumber' => 1,
+                          'CASRegistryNumber' => 1,
+                          'MiddleName' => 1,
+                          'NlmUniqueID' => 1,
+                          'MedlineTA' => 1,
+                          'MedlinePgn' => 1,
+                          'MedlineCode' => 1,
+                          'Country' => 1,
+                          'ISSN' => 1,
+                          'ArticleTitle' => 1,
+                          'Issue' => 1,
+                          'AbstractText' => 1,
+                          'VernacularTitle' => 1,
+                          'GrantID' => 1,
+                          'Agency' => 1,
+                          'Acronym' => 1,
+                          'MedlineDate' => 1,
+                          'NumberOfReferences' => 1,
+                          'RefSource' => 1,
+                          'DataBankName' => 1,
+                          'CopyrightInformation' => 1,
+                          'Suffix' => 1,
+                          'Note' => 1,
+                          'CollectiveName' => 1,
+                          'Hour' => 1,
+                          'Minute' => 1,
+                          'Second' => 1,
+                          'Season' => 1,
+                          'Coden' => 1,
+                          'ISOAbbreviation' => 1,
+                          'Publisher' => 1,
+                          'CollectionTitle' => 1,
+                          'DateOfElectronicPublication' => 1,
+                          'StartPage' => 1,
+                          'EndPage' => 1,
+                          'Volume' => 1,
+                          'Title' => 1,
+                          );
 
 %POP_OBJ_AND_PEEK_OBJ = (
-			 'Pagination' => 1,
-			 'JournalIssue' => 1,
-			 'Journal' => 1,
-			 'DateCreated' => 1,
-			 'Article' => 1,
-			 'DateCompleted' => 1,
-			 'DateRevised' => 1,
-			 'CommentsCorrections' => 1,
-			 'Book' => 1,
-			 'PubDate' => 1,
-			 'Abstract' => 1,
-			 );
+                         'Pagination' => 1,
+                         'JournalIssue' => 1,
+                         'Journal' => 1,
+                         'DateCreated' => 1,
+                         'Article' => 1,
+                         'DateCompleted' => 1,
+                         'DateRevised' => 1,
+                         'CommentsCorrections' => 1,
+                         'Book' => 1,
+                         'PubDate' => 1,
+                         'Abstract' => 1,
+                         );
 
 %POP_AND_ADD_DATA_ELEMENT = (
-			     'Keyword' => 'keywords',
-			     'PublicationType' => 'publicationTypes',
-			     'CitationSubset' => 'citationSubsets',
-			     'Language' => 'languages',
-			     'AccessionNumber' => 'accessionNumbers',
-			     'GeneSymbol' => 'geneSymbols',
-			     'SpaceFlightMission' => 'spaceFlightMissions',
-			     );
+                             'Keyword' => 'keywords',
+                             'PublicationType' => 'publicationTypes',
+                             'CitationSubset' => 'citationSubsets',
+                             'Language' => 'languages',
+                             'AccessionNumber' => 'accessionNumbers',
+                             'GeneSymbol' => 'geneSymbols',
+                             'SpaceFlightMission' => 'spaceFlightMissions',
+                             );
 
 
 %POP_AND_ADD_ELEMENT = (
-			'OtherAbstract' => 'otherAbstracts',
-			'Chemical' => 'chemicals',
-			'KeywordList' => 'keywordLists',
-			'Grant' => 'grants',
-			'UpdateIn' => 'updateIns',
-			'CommentOn' => 'commentOns',
-			'CommentIn' => 'commentIns',
-			'DataBank' => 'dataBanks',
-			'PersonalNameSubject' => 'personalNameSubjects',
-			'ErratumFor' => 'erratumFors',
-			'ErratumIn' => 'erratumIns',
-			'RepublishedFrom' => 'republishedFroms',
-			'RepublishedIn' => 'republishedIns',
-			'RetractionOf' => 'retractionOfs',
-			'RetractionIn' => 'retractionIns',
-			'UpdateOf' => 'updateOfs',
-			'OriginalReportIn' => 'originalReportIns',
-			'SummaryForPatientsIn' => 'summaryForPatientsIns',
-			'MeshHeading' => 'meshHeadings',
-			);
+                        'OtherAbstract' => 'otherAbstracts',
+                        'Chemical' => 'chemicals',
+                        'KeywordList' => 'keywordLists',
+                        'Grant' => 'grants',
+                        'UpdateIn' => 'updateIns',
+                        'CommentOn' => 'commentOns',
+                        'CommentIn' => 'commentIns',
+                        'DataBank' => 'dataBanks',
+                        'PersonalNameSubject' => 'personalNameSubjects',
+                        'ErratumFor' => 'erratumFors',
+                        'ErratumIn' => 'erratumIns',
+                        'RepublishedFrom' => 'republishedFroms',
+                        'RepublishedIn' => 'republishedIns',
+                        'RetractionOf' => 'retractionOfs',
+                        'RetractionIn' => 'retractionIns',
+                        'UpdateOf' => 'updateOfs',
+                        'OriginalReportIn' => 'originalReportIns',
+                        'SummaryForPatientsIn' => 'summaryForPatientsIns',
+                        'MeshHeading' => 'meshHeadings',
+                        );
 
 sub handle_doc_start {
     @Citations = ();
@@ -461,7 +470,7 @@ sub handle_char {
 
 
 sub handle_start {
-    my ($expat, $e, %attrs) = @_; 
+    my ($expat, $e, %attrs) = @_;
 #    &_debug_object_stack ("START", $e);
 
     #
@@ -470,22 +479,22 @@ sub handle_start {
     # the @PCDataStack _and_ on @ObjectStack.
     #
     if ($e eq 'QualifierName' or
-	$e eq 'SubHeading') {
-	my %p = ();
-	$p{'majorTopic'} = $attrs{'MajorTopicYN'} if $attrs{'MajorTopicYN'};
-	push (@ObjectStack, \%p);
+        $e eq 'SubHeading') {
+        my %p = ();
+        $p{'majorTopic'} = $attrs{'MajorTopicYN'} if $attrs{'MajorTopicYN'};
+        push (@ObjectStack, \%p);
     }
 
     if ($e eq 'GeneralNote') {
-	my %p = ();
-	$p{'owner'} = $attrs{'Owner'} if $attrs{'Owner'};
-	push (@ObjectStack, \%p);
+        my %p = ();
+        $p{'owner'} = $attrs{'Owner'} if $attrs{'Owner'};
+        push (@ObjectStack, \%p);
     }
 
     if ($e eq 'OtherID') {
-	my %p = ();
-	$p{'source'} = $attrs{'Source'};
-	push (@ObjectStack, \%p);
+        my %p = ();
+        $p{'source'} = $attrs{'Source'};
+        push (@ObjectStack, \%p);
     }
 
     #
@@ -495,14 +504,14 @@ sub handle_start {
     # already one.
     #
     if ($e eq 'LastName' or
-	$e eq 'FirstName' or
-	$e eq 'MidleName' or
-	$e eq 'Initials' or
-	$e eq 'ForeName' or
-	$e eq 'Suffix') {
-	my $peek = $ObjectStack[$#ObjectStack];
-	push (@ObjectStack, {'type' => 'PersonalName'})
-	    unless (ref $peek and &_eq_hash_elem ($peek, 'type', 'PersonalName'));
+        $e eq 'FirstName' or
+        $e eq 'MidleName' or
+        $e eq 'Initials' or
+        $e eq 'ForeName' or
+        $e eq 'Suffix') {
+        my $peek = $ObjectStack[$#ObjectStack];
+        push (@ObjectStack, {'type' => 'PersonalName'})
+            unless (ref $peek and &_eq_hash_elem ($peek, 'type', 'PersonalName'));
     }
 
     #
@@ -510,55 +519,54 @@ sub handle_start {
     # For them I create an entry on @PCDataStack.
     #
     if (exists $PCDATA_NAMES{$e}) {
-	push (@PCDataStack, '');
+        push (@PCDataStack, '');
 
     #
     # And finally, all non-PCDATA elements go to the objectStack
     #
     } elsif (exists $SIMPLE_TREATMENT{$e}) {
-	push (@ObjectStack, {});
+        push (@ObjectStack, {});
 
     } elsif ($e eq 'PersonalNameSubject') {
-	push (@ObjectStack, {'type' => 'PersonalName'});
+        push (@ObjectStack, {'type' => 'PersonalName'});
 
     } elsif ($e eq 'DescriptorName' or
-	     $e eq 'Descriptor') {
-	if (&_eq_hash_elem (\%attrs, 'MajorTopicYN', "Y")) {
-	    my $peek = $ObjectStack[$#ObjectStack];
-	    $$peek{'descriptorMajorTopic'} = "Y";
-	}
-	    
+             $e eq 'Descriptor') {
+        if (&_eq_hash_elem (\%attrs, 'MajorTopicYN', "Y")) {
+            my $peek = $ObjectStack[$#ObjectStack];
+            $$peek{'descriptorMajorTopic'} = "Y";
+        }
+
     } elsif ($e eq 'MedlineCitation' ||
-	     $e eq 'NCBIArticle') {
-	my %p = ( 'type' => 'MedlineCitation' );
-	$p{'owner'} = $attrs{'Owner'} if $attrs{'Owner'};
-	$p{'status'} = $attrs{'Status'} if $attrs{'Status'};
-	push (@ObjectStack, \%p);
+             $e eq 'NCBIArticle') {
+        my %p = ( 'type' => 'MedlineCitation' );
+        $p{'owner'} = $attrs{'Owner'} if $attrs{'Owner'};
+        $p{'status'} = $attrs{'Status'} if $attrs{'Status'};
+        push (@ObjectStack, \%p);
 
     } elsif ($e eq 'GrantList') {
-	if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
-	    my $peek = $ObjectStack[$#ObjectStack];
-	    $$peek{'grantListComplete'} = "N";
-	}
+        if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
+            my $peek = $ObjectStack[$#ObjectStack];
+            $$peek{'grantListComplete'} = "N";
+        }
 
     } elsif ($e eq 'DataBankList') {
-	if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
-	    my $peek = $ObjectStack[$#ObjectStack];
-	    $$peek{'dataBankListComplete'} = "N";
-	}
+        if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
+            my $peek = $ObjectStack[$#ObjectStack];
+            $$peek{'dataBankListComplete'} = "N";
+        }
 
     } elsif ($e eq 'AuthorList') {
-	if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
-	    my $peek = $ObjectStack[$#ObjectStack];
-	    $$peek{'authorListComplete'} = "N";
-	}
+        if (&_eq_hash_elem (\%attrs, 'CompleteYN', "N")) {
+            my $peek = $ObjectStack[$#ObjectStack];
+            $$peek{'authorListComplete'} = "N";
+        }
 
     } elsif ($e eq 'OtherAbstract') {
-	my %p = ();
-	$p{'type'} = $attrs{'Type'} if $attrs{'Type'};
-	push (@ObjectStack, \%p);
-#	push (@ObjectStack, { 'type' => 'Abstract' });
-	      
+        my %p = ();
+        $p{'type'} = $attrs{'Type'} if $attrs{'Type'};
+        push (@ObjectStack, \%p);
+#       push (@ObjectStack, { 'type' => 'Abstract' });
     }
 }
 
@@ -571,26 +579,26 @@ sub handle_end {
     # p-object on the objectStack.
     #
     if ($e eq 'QualifierName' or
-	$e eq 'SubHeading') {
-	my $p = pop @ObjectStack;   # pSubHeading
+        $e eq 'SubHeading') {
+        my $p = pop @ObjectStack;   # pSubHeading
         $$p{'subHeading'} = pop @PCDataStack;
-	&_add_element ('subHeadings', $p);  # adding to pMeshHeadings
-#	&_debug_object_stack ("END", $e);
-	return;
+        &_add_element ('subHeadings', $p);  # adding to pMeshHeadings
+#       &_debug_object_stack ("END", $e);
+        return;
 
     } elsif ($e eq 'GeneralNote') {
-	my $p = pop @ObjectStack;  # pGeneralNote
+        my $p = pop @ObjectStack;  # pGeneralNote
         $$p{'generalNote'} = pop @PCDataStack;
-	&_add_element ('generalNotes', $p);  # adding to pMedlineCitation
-#	&_debug_object_stack ("END", $e);
-	return;
+        &_add_element ('generalNotes', $p);  # adding to pMedlineCitation
+#       &_debug_object_stack ("END", $e);
+        return;
 
     } elsif ($e eq 'OtherID') {
-	my $p = pop @ObjectStack;  # pOtherID
+        my $p = pop @ObjectStack;  # pOtherID
         $$p{'otherID'} = pop @PCDataStack;
-	&_add_element ('otherIDs', $p);  # adding to pMedlineCitation
-#	&_debug_object_stack ("END", $e);
-	return;
+        &_add_element ('otherIDs', $p);  # adding to pMedlineCitation
+#       &_debug_object_stack ("END", $e);
+        return;
     }
 
     #
@@ -600,85 +608,85 @@ sub handle_end {
     #
 
     if (exists $POP_DATA_AND_PEEK_OBJ{$e}) {
-	&_data2obj ("\l$e");
+        &_data2obj ("\l$e");
 
     } elsif (exists $POP_OBJ_AND_PEEK_OBJ{$e}) {
-	&_obj2obj ("\l$e");
+        &_obj2obj ("\l$e");
 
     } elsif (exists $POP_AND_ADD_ELEMENT{$e}) {
-	&_add_element ($POP_AND_ADD_ELEMENT{$e}, pop @ObjectStack);
+        &_add_element ($POP_AND_ADD_ELEMENT{$e}, pop @ObjectStack);
 
     } elsif (exists $POP_AND_ADD_DATA_ELEMENT{$e}) {
-	&_add_element ($POP_AND_ADD_DATA_ELEMENT{$e});
+        &_add_element ($POP_AND_ADD_DATA_ELEMENT{$e});
 
     } elsif ($e eq 'Author' or
-	     $e eq 'Investigator') {
-	my $pAuthor;
-	my $p = pop @ObjectStack;  # pPersonalName or pAuthor
-	if (&_eq_hash_elem ($p, 'type', 'PersonalName')) {
-	    $pAuthor = pop @ObjectStack;
-	    $$pAuthor{'personalName'} = $p;
-	} else {
-	    $pAuthor = $p;
-	}
-	my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pArticle or pBook
-	if (&_eq_hash_elem ($peek, 'type', 'MedlineCitation')) {
-	    &_add_element ('investigators', $pAuthor);
-	} else {
-	    &_add_element ('authors', $pAuthor);
-	}
+             $e eq 'Investigator') {
+        my $pAuthor;
+        my $p = pop @ObjectStack;  # pPersonalName or pAuthor
+        if (&_eq_hash_elem ($p, 'type', 'PersonalName')) {
+            $pAuthor = pop @ObjectStack;
+            $$pAuthor{'personalName'} = $p;
+        } else {
+            $pAuthor = $p;
+        }
+        my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pArticle or pBook
+        if (&_eq_hash_elem ($peek, 'type', 'MedlineCitation')) {
+            &_add_element ('investigators', $pAuthor);
+        } else {
+            &_add_element ('authors', $pAuthor);
+        }
 
     } elsif ($e eq 'MedlineJournalInfo') {
-	&_obj2obj ('journalInfo');
+        &_obj2obj ('journalInfo');
 
     } elsif ($e eq 'PMID') {
-	my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pReference or pDeleteCitation
-	if (&_eq_hash_elem ($peek, 'type', 'DeleteCitation')) {
-	    &_add_element ('PMIDs');
-	} else {
-	    $$peek{'PMID'} = pop @PCDataStack;
-	}
+        my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pReference or pDeleteCitation
+        if (&_eq_hash_elem ($peek, 'type', 'DeleteCitation')) {
+            &_add_element ('PMIDs');
+        } else {
+            $$peek{'PMID'} = pop @PCDataStack;
+        }
 
     } elsif ($e eq 'MedlineID') {
-	my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pReference or pDeleteCitation
-	if (&_eq_hash_elem ($peek, 'type', 'DeleteCitation')) {
-	    &_add_element ('MedlineIDs');
-	} else {
-	    $$peek{'medlineID'} = pop @PCDataStack;
-	}
+        my $peek = $ObjectStack[$#ObjectStack];   # pMedlineCitation, pReference or pDeleteCitation
+        if (&_eq_hash_elem ($peek, 'type', 'DeleteCitation')) {
+            &_add_element ('MedlineIDs');
+        } else {
+            $$peek{'medlineID'} = pop @PCDataStack;
+        }
 
 #    } elsif ($e eq 'OtherAbstract') {
-#	my $pAbstract = pop @ObjectStack;
-#	my $pOtherAbstract = pop @ObjectStack;
-#	$$pOtherAbstract{'abstract'} = $pAbstract
-#	    &_add_element ('otherAbstracts', $pOtherAbstract);
+#       my $pAbstract = pop @ObjectStack;
+#       my $pOtherAbstract = pop @ObjectStack;
+#       $$pOtherAbstract{'abstract'} = $pAbstract
+#           &_add_element ('otherAbstracts', $pOtherAbstract);
 
     } elsif ($e eq 'Affiliation') {
-	my $peek = $ObjectStack[$#ObjectStack];
-	if (&_eq_hash_elem ($peek, 'type', 'PersonalName')) {
-	    my $peek2 = $ObjectStack[$#ObjectStack - 1];
-	    $$peek2{'affiliation'} = pop @PCDataStack;
-	} else {
-	    $$peek{'affiliation'} = pop @PCDataStack;
-	}
+        my $peek = $ObjectStack[$#ObjectStack];
+        if (&_eq_hash_elem ($peek, 'type', 'PersonalName')) {
+            my $peek2 = $ObjectStack[$#ObjectStack - 1];
+            $$peek2{'affiliation'} = pop @PCDataStack;
+        } else {
+            $$peek{'affiliation'} = pop @PCDataStack;
+        }
 
     } elsif ($e eq 'DeleteCitation') {
-	pop @ObjectStack;
-###	warn ("'DeleteCitation' tag found. Not known what to do with it.");   # silently ignored
+        pop @ObjectStack;
+###     warn ("'DeleteCitation' tag found. Not known what to do with it.");   # silently ignored
 
     } elsif ($e eq 'MedlineCitation') {
 
-	#
-	# Here we finally have the whole citation ready.
-	#
-	&_process_citation (pop @ObjectStack);
+        #
+        # Here we finally have the whole citation ready.
+        #
+        &_process_citation (pop @ObjectStack);
 
     #
     # ERROR: if we are here, there was an unexpected element
     #
     } elsif (exists $PCDATA_NAMES{$e}) {
-	pop @PCDataStack;
-	warn ("An unexpected element found: $e");
+        pop @PCDataStack;
+        warn ("An unexpected element found: $e");
     }
 #    &_debug_object_stack ("END", $e);
 
@@ -690,9 +698,9 @@ sub _process_citation {
     $citation = $Convert->convert ($citation) if defined $Convert;
 
     if ($Callback) {
-	&$Callback ($citation);
+        &$Callback ($citation);
     } else {
-	push (@Citations, $citation);
+        push (@Citations, $citation);
     }
 }
 
@@ -729,17 +737,16 @@ sub _eq_hash_elem {
 #
 # --- only for debugging
 #
-use vars qw(%DEBUGSTACK);
-%DEBUGSTACK = ();
+our %DEBUGSTACK = ();
 sub _debug_object_stack {
     my ($action, $element) = @_;
     if ($action =~ /^START/o) {
-	$DEBUGSTACK{$element} = (@ObjectStack+0);
+        $DEBUGSTACK{$element} = (@ObjectStack+0);
     } else {
-	return if $element eq 'LastName';
-	print "Element $element starts on " .
-	    $DEBUGSTACK{$element} . 'and ends on ' . (@ObjectStack+0) . "\n"
-		if $DEBUGSTACK{$element} != (@ObjectStack+0);
+        return if $element eq 'LastName';
+        print "Element $element starts on " .
+            $DEBUGSTACK{$element} . 'and ends on ' . (@ObjectStack+0) . "\n"
+                if $DEBUGSTACK{$element} != (@ObjectStack+0);
     }
 }
 

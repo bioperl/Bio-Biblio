@@ -86,16 +86,19 @@ with an underscore _.
 
 
 package Bio::Biblio::IO::pubmedxml;
-use vars qw(%PCDATA_NAMES %SIMPLE_TREATMENT %POP_DATA_AND_PEEK_OBJ %POP_AND_ADD_DATA_ELEMENT);
-
 use strict;
+use warnings;
 
-use base qw(Bio::Biblio::IO::medlinexml);
+use parent qw(Bio::Biblio::IO::medlinexml);
 
+our %PCDATA_NAMES;
+our %SIMPLE_TREATMENT;
+our %POP_DATA_AND_PEEK_OBJ;
+our %POP_AND_ADD_DATA_ELEMENT;
 
 sub _initialize {
     my ($self, @args) = @_;
-    
+
     # make a hashtable from @args
     my %param = @args;
     @param { map { lc $_ } keys %param } = values %param; # lowercase keys
@@ -104,35 +107,35 @@ sub _initialize {
     # there) - changing '-key' into '_key', and making keys lowercase
     my $new_key;
     foreach my $key (keys %param) {
-	($new_key = $key) =~ s/^-/_/;
-	$self->{ lc $new_key } = $param { $key };
+        ($new_key = $key) =~ s/^-/_/;
+        $self->{ lc $new_key } = $param { $key };
     }
 
     # find the format for output - and put it into a global $Convert
     # because it will be used by the event handler who knows nothing
     # about this object
     my $result = $self->{'_result'} || 'pubmed2ref';
-    $result = "\L$result";	# normalize capitalization to lower case
+    $result = "\L$result";      # normalize capitalization to lower case
 
     # a special case is 'raw' when no converting module is loaded
     # and citations will be returned as a hashtable (the one which
     # is created during parsing XML file/stream)
     unless ($result eq 'raw') {
 
-	# load module with output converter - as defined in $result
-	if (defined &Bio::Biblio::IO::_load_format_module ($result)) {
-	    $Bio::Biblio::IO::medlinexml::Convert = "Bio::Biblio::IO::$result"->new (@args);
-	}
+        # load module with output converter - as defined in $result
+        if (defined &Bio::Biblio::IO::_load_format_module ($result)) {
+            $Bio::Biblio::IO::medlinexml::Convert = "Bio::Biblio::IO::$result"->new (@args);
+        }
     }
 
     # create an instance of the XML parser
     # (unless it is already there...)
     $self->{'_xml_parser'} = XML::Parser->new (Handlers => {Init  => \&Bio::Biblio::IO::medlinexml::handle_doc_start,
-							   Start => \&handle_start,
-							   End   => \&handle_end,
-							   Char  => \&Bio::Biblio::IO::medlinexml::handle_char,
-							   Final => \&Bio::Biblio::IO::medlinexml::handle_doc_end})
-	unless $self->{'_xml_parser'};
+                                                            Start => \&handle_start,
+                                                            End   => \&handle_end,
+                                                            Char  => \&Bio::Biblio::IO::medlinexml::handle_char,
+                                                            Final => \&Bio::Biblio::IO::medlinexml::handle_doc_end})
+        unless $self->{'_xml_parser'};
 
     # if there is an argument '-callback' then start parsing at once -
     # the registered event handlers will use 'callback' to report
@@ -142,7 +145,7 @@ sub _initialize {
     # because the event handler subroutines know nothing about this
     # object (unfortunately)
     if ($SUPER::Callback = $self->{'_callback'}) {
-	$self->_parse;
+        $self->_parse;
     }
 }
 
@@ -204,7 +207,7 @@ sub _initialize {
 
 
 sub handle_start {
-    my ($expat, $e, %attrs) = @_; 
+    my ($expat, $e, %attrs) = @_;
 #    &Bio::Biblio::IO::medlinexml::_debug_object_stack ("START", $e);
 
     #
@@ -213,16 +216,16 @@ sub handle_start {
     # the @PCDataStack _and_ on @ObjectStack.
     #
     if ($e eq 'ArticleId') {
-	my %p = ();
-	$p{'idType'} = (defined $attrs{'IdType'} ? $attrs{'IdType'} : 'pubmed');
-	push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
+        my %p = ();
+        $p{'idType'} = (defined $attrs{'IdType'} ? $attrs{'IdType'} : 'pubmed');
+        push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
     }
 
     if ($e eq 'URL') {
-	my %p = ();
-	$p{'type'} = $attrs{'type'} if $attrs{'type'};
-	$p{'lang'} = $attrs{'lang'} if $attrs{'lang'};
-	push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
+        my %p = ();
+        $p{'type'} = $attrs{'type'} if $attrs{'type'};
+        $p{'lang'} = $attrs{'lang'} if $attrs{'lang'};
+        push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
     }
 
     #
@@ -230,24 +233,24 @@ sub handle_start {
     # For them I create an entry on @PCDataStack.
     #
     if (exists $PCDATA_NAMES{$e}) {
-	push (@Bio::Biblio::IO::medlinexml::PCDataStack, '');
+        push (@Bio::Biblio::IO::medlinexml::PCDataStack, '');
 
     #
     # And finally, all non-PCDATA elements go to the objectStack
     #
     } elsif (exists $SIMPLE_TREATMENT{$e}) {
-	push (@Bio::Biblio::IO::medlinexml::ObjectStack, {});
+        push (@Bio::Biblio::IO::medlinexml::ObjectStack, {});
 
     } elsif ($e eq 'ArticleIdList') {
-	;
+        ;
 
     } elsif ($e eq 'PubMedPubDate') {
-	my %p = ();
-	$p{'pubStatus'} = $attrs{'PubStatus'} if $attrs{'PubStatus'};
-	push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
+        my %p = ();
+        $p{'pubStatus'} = $attrs{'PubStatus'} if $attrs{'PubStatus'};
+        push (@Bio::Biblio::IO::medlinexml::ObjectStack, \%p);
 
     } else {
-	&Bio::Biblio::IO::medlinexml::handle_start ($expat, $e, %attrs);	
+        &Bio::Biblio::IO::medlinexml::handle_start ($expat, $e, %attrs);
     }
 }
 
@@ -261,17 +264,17 @@ sub handle_end {
     # p-object on the objectStack.
     #
     if ($e eq 'ArticleId') {
-	&Bio::Biblio::IO::medlinexml::_data2obj ('id');
-	&Bio::Biblio::IO::medlinexml::_add_element ('pubmedArticleIds', pop @Bio::Biblio::IO::medlinexml::ObjectStack);
-#	&Bio::Biblio::IO::medlinexml::_debug_object_stack ("END", $e);
-	return;
+        &Bio::Biblio::IO::medlinexml::_data2obj ('id');
+        &Bio::Biblio::IO::medlinexml::_add_element ('pubmedArticleIds', pop @Bio::Biblio::IO::medlinexml::ObjectStack);
+#       &Bio::Biblio::IO::medlinexml::_debug_object_stack ("END", $e);
+        return;
     }
 
     if ($e eq 'URL') {
-	&Bio::Biblio::IO::medlinexml::_data2obj ('URL');
-	&Bio::Biblio::IO::medlinexml::_add_element ('pubmedURLs', pop @Bio::Biblio::IO::medlinexml::ObjectStack);
-#	&Bio::Biblio::IO::medlinexml::_debug_object_stack ("END", $e);
-	return;
+        &Bio::Biblio::IO::medlinexml::_data2obj ('URL');
+        &Bio::Biblio::IO::medlinexml::_add_element ('pubmedURLs', pop @Bio::Biblio::IO::medlinexml::ObjectStack);
+#       &Bio::Biblio::IO::medlinexml::_debug_object_stack ("END", $e);
+        return;
     }
 
 
@@ -280,30 +283,30 @@ sub handle_end {
     #
 
     if (exists $POP_DATA_AND_PEEK_OBJ{$e}) {
-	&Bio::Biblio::IO::medlinexml::_data2obj ("\l$e");
+        &Bio::Biblio::IO::medlinexml::_data2obj ("\l$e");
 
     } elsif (exists $POP_AND_ADD_DATA_ELEMENT{$e}) {
-	&Bio::Biblio::IO::medlinexml::_add_element ($POP_AND_ADD_DATA_ELEMENT{$e}, pop @Bio::Biblio::IO::medlinexml::ObjectStack);
+        &Bio::Biblio::IO::medlinexml::_add_element ($POP_AND_ADD_DATA_ELEMENT{$e}, pop @Bio::Biblio::IO::medlinexml::ObjectStack);
 
     } elsif ($e eq 'MedlineCitation' ||
-	     $e eq 'NCBIArticle') {
-	&Bio::Biblio::IO::medlinexml::_obj2obj ('Citation');
+             $e eq 'NCBIArticle') {
+        &Bio::Biblio::IO::medlinexml::_obj2obj ('Citation');
 
     } elsif ($e eq 'PubmedData') {
-	&Bio::Biblio::IO::medlinexml::_obj2obj ('PubmedData');
+        &Bio::Biblio::IO::medlinexml::_obj2obj ('PubmedData');
 
     } elsif ($e eq 'PubMedArticle' ||
-	     $e eq 'PubmedArticle') {
+             $e eq 'PubmedArticle') {
 
-	#
-	# Here we finally have the whole citation ready.
-	#
-	&Bio::Biblio::IO::medlinexml::_process_citation (pop @Bio::Biblio::IO::medlinexml::ObjectStack);
+        #
+        # Here we finally have the whole citation ready.
+        #
+        &Bio::Biblio::IO::medlinexml::_process_citation (pop @Bio::Biblio::IO::medlinexml::ObjectStack);
 
     } else {
-	&Bio::Biblio::IO::medlinexml::handle_end ($expat, $e);	
+        &Bio::Biblio::IO::medlinexml::handle_end ($expat, $e);
     }
-    
+
 #    &Bio::Biblio::IO::medlinexml::_debug_object_stack ("END", $e);
 
 }

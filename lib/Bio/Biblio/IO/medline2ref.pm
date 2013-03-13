@@ -77,8 +77,10 @@ with an underscore _.
 
 
 package Bio::Biblio::IO::medline2ref;
-
 use strict;
+use warnings;
+
+use Bio::Annotation::DBLink;
 
 use Bio::Biblio::MedlineJournal;
 use Bio::Biblio::MedlineBook;
@@ -86,16 +88,16 @@ use Bio::Biblio::Provider;
 use Bio::Biblio::Person;
 use Bio::Biblio::Organisation;
 
-use base qw(Bio::Root::Root);
+use parent qw(Bio::Root::Root);
 
 # -----------------------------------------------------------------------------
 sub new {
     my ($caller, @args) = @_;
     my $class = ref ($caller) || $caller;
 
-    # object creation and blessing    
-    my ($self) = $class->SUPER::new (@args);	
-    
+    # object creation and blessing
+    my ($self) = $class->SUPER::new (@args);
+
     # make a hashtable from @args
     my %param = @args;
     @param { map { lc $_ } keys %param } = values %param; # lowercase keys
@@ -104,8 +106,8 @@ sub new {
     # there) - changing '-key' into '_key', and making keys lowercase
     my $new_key;
     foreach my $key (keys %param) {
-	($new_key = $key) =~ s/^-/_/;
-	$self->{ lc $new_key } = $param { $key };
+        ($new_key = $key) =~ s/^-/_/;
+        $self->{ lc $new_key } = $param { $key };
     }
 
     # done
@@ -128,15 +130,15 @@ sub _load_instance {
     my $result;
     my $article = $$source{'article'};
     if (defined $article) {
-	if (defined $$article{'journal'}) {
-	    $result = $self->_new_instance ('Bio::Biblio::MedlineJournalArticle');
-	    $result->type ('JournalArticle');
-	} elsif (defined $$article{'book'}) {
-	    $result = $self->_new_instance ('Bio::Biblio::MedlineBookArticle');
-	    $result->type ('BookArticle');
-	} else {
-	    $result->type ('MedlineArticle');
-	}
+        if (defined $$article{'journal'}) {
+            $result = $self->_new_instance ('Bio::Biblio::MedlineJournalArticle');
+            $result->type ('JournalArticle');
+        } elsif (defined $$article{'book'}) {
+            $result = $self->_new_instance ('Bio::Biblio::MedlineBookArticle');
+            $result->type ('BookArticle');
+        } else {
+            $result->type ('MedlineArticle');
+        }
     }
     $result = $self->_new_instance ('Bio::Biblio::Ref') unless defined $result;
     return $result;
@@ -148,11 +150,11 @@ sub convert {
 
    if (defined $result->type) {
        if ($result->type eq 'JournalArticle') {
-	   &_convert_journal_article ($result, $source);
+           &_convert_journal_article ($result, $source);
        } elsif ($result->type eq 'BookArticle') {
-	   &_convert_book_article ($result, $source);
+           &_convert_book_article ($result, $source);
        } elsif ($result->type eq 'Article') {
-	   &_convert_article ($result, $source);
+           &_convert_article ($result, $source);
        }
    }
 
@@ -227,7 +229,7 @@ sub convert {
    if (defined $$source{'personalNameSubjects'}) {
        my @contributors;
        foreach my $person ( @{ $$source{'personalNameSubjects'} } ) {
-	   push (@contributors, &_convert_personal_name ($person));
+           push (@contributors, &_convert_personal_name ($person));
        }
        $result->contributors (\@contributors);
    }
@@ -236,17 +238,17 @@ sub convert {
    # having keys for the 'type', 'AbstractText' and the 'copyright'
    $result->other_abstracts ($$source{'otherAbstracts'}) if defined $$source{'otherAbstracts'};
 #   if (defined $$source{'otherAbstracts'}) {
-#	my @other_abstracts = ();
-#	foreach my $oa ( @{ $$source{'otherAbstracts'} } ) {
-#	    if (defined $$oa{'abstractText'}) {
-#		my $abstract = $$oa{'abstractText'};
-#		delete $$oa{'abstractText'};
-#		$$oa{'abstract'} = $$abstract{'abstractText'};
-#		$$oa{'rights'} = $$abstract{'copyrightInformation'} if defined $$abstract{'copyrightInformation'};
-#		push (@other_abstracts, $oa);
-#	    }
-#	}
-#	$result->other_abstracts (\@other_abstracts);
+#       my @other_abstracts = ();
+#       foreach my $oa ( @{ $$source{'otherAbstracts'} } ) {
+#           if (defined $$oa{'abstractText'}) {
+#               my $abstract = $$oa{'abstractText'};
+#               delete $$oa{'abstractText'};
+#               $$oa{'abstract'} = $$abstract{'abstractText'};
+#               $$oa{'rights'} = $$abstract{'copyrightInformation'} if defined $$abstract{'copyrightInformation'};
+#               push (@other_abstracts, $oa);
+#           }
+#       }
+#       $result->other_abstracts (\@other_abstracts);
 #    }
 
    # ...MEDLINE's OtherIDs into an array of hashtables, each one
@@ -265,11 +267,11 @@ sub convert {
        $result->mesh_headings ($$source{'meshHeadings'});
        my %subject_headings;
        foreach my $mesh ( @{ $$source{'meshHeadings'} } ) {
-	   $subject_headings{ $$mesh{'descriptorName'} } = 1 if defined $$mesh{'descriptorName'};
+           $subject_headings{ $$mesh{'descriptorName'} } = 1 if defined $$mesh{'descriptorName'};
        }
        if (%subject_headings) {
-	   $result->subject_headings (\%subject_headings);
-	   $result->subject_headings_source ('Mesh');
+           $result->subject_headings (\%subject_headings);
+   $result->subject_headings_source ('Mesh');
        }
    }
 
@@ -279,11 +281,11 @@ sub convert {
    if (defined $$source{'keywordLists'}) {
        my %keywords;
        foreach my $keywords ( @{ $$source{'keywordLists'} } ) {
-	   if ($$keywords{'keywords'}) {
-	       foreach my $keyword ( @{ $$keywords{'keywords'} } ) {
-		   $keywords{$keyword} = 1;
-	       }
-	   }
+           if ($$keywords{'keywords'}) {
+               foreach my $keyword ( @{ $$keywords{'keywords'} } ) {
+           $keywords{$keyword} = 1;
+               }
+           }
        }
        $result->keywords (\%keywords) if %keywords;
    }
@@ -314,32 +316,32 @@ sub _new_instance {
 sub _convert_date {
     my ($date) = @_;
     return unless
-	exists $$date{'year'} or
-	    exists $$date{'month'} or
-		exists $$date{'day'} or
-		    exists $$date{'hour'} or
-			exists $$date{'minute'} or
-			    exists $$date{'second'};
+        exists $$date{'year'} or
+            exists $$date{'month'} or
+                exists $$date{'day'} or
+                    exists $$date{'hour'} or
+                        exists $$date{'minute'} or
+                            exists $$date{'second'};
 
 
     my $converted = (exists $$date{'year'} ? $$date{'year'} : '0000');
 
     if (exists $$date{'month'}) {
-	$converted .= '-' . $$date{'month'};
+        $converted .= '-' . $$date{'month'};
     } elsif (exists $$date{'day'}) {
-	$converted .= '-00';
+        $converted .= '-00';
     }
 
     if (exists $$date{'day'}) {
-	$converted .= '-' . $$date{'day'};
+        $converted .= '-' . $$date{'day'};
     } elsif (exists $$date{'hour'}) {
-	$converted .= '-00';
+        $converted .= '-00';
     }
 
     if (exists $$date{'hour'}) {
-	$converted .= 'T' . $$date{'hour'} .
-	    ':' . (exists $$date{'minute'} ? $$date{'minute'} : '00') .
-		':' . (exists $$date{'second'} ? $$date{'second'} : '00') . 'Z';
+        $converted .= 'T' . $$date{'hour'} .
+            ':' . (exists $$date{'minute'} ? $$date{'minute'} : '00') .
+                ':' . (exists $$date{'second'} ? $$date{'second'} : '00') . 'Z';
     }
     return $converted;
 }
@@ -349,8 +351,8 @@ sub _convert_date {
 sub _convert_personal_name {
     my ($person) = @_;
     foreach my $key (keys %$person) {
-	$$person{"_$key"} = $$person{$key};
-	delete $$person{$key};
+        $$person{"_$key"} = $$person{$key};
+        delete $$person{$key};
     }
     Bio::Biblio::Person->new(%$person);
 }
@@ -372,29 +374,29 @@ sub _convert_journal_article {
     $journal->abbreviation ($$from_journal{'iSOAbbreviation'}) if defined $$from_journal{'iSOAbbreviation'};
     $journal->coden ($$from_journal{'coden'}) if defined $$from_journal{'coden'};
     if (defined $$from_journal{'journalIssue'}) {
-	my $issue = $$from_journal{'journalIssue'};
-	$result->volume ($$issue{'volume'}) if defined $$issue{'volume'};
-	$result->issue ($$issue{'issue'}) if defined $$issue{'issue'};
+        my $issue = $$from_journal{'journalIssue'};
+        $result->volume ($$issue{'volume'}) if defined $$issue{'volume'};
+        $result->issue ($$issue{'issue'}) if defined $$issue{'issue'};
 
-	if (defined $$issue{'pubDate'}) {
-	    my $pub_date = $$issue{'pubDate'};
-	    my $converted = &_convert_date ($pub_date);
-	    $result->date ($converted) if defined $converted;
+        if (defined $$issue{'pubDate'}) {
+            my $pub_date = $$issue{'pubDate'};
+            my $converted = &_convert_date ($pub_date);
+            $result->date ($converted) if defined $converted;
 
-	    # Some parts of a MEDLINE date are stored just as properties
-	    # because they have almost non-parseable format :-).
-	    $result->medline_date ($$pub_date{'medlineDate'}) if defined $$pub_date{'medlineDate'};
-	    $result->season ($$pub_date{'season'}) if defined $$pub_date{'season'};
-	}
+            # Some parts of a MEDLINE date are stored just as properties
+            # because they have almost non-parseable format :-).
+            $result->medline_date ($$pub_date{'medlineDate'}) if defined $$pub_date{'medlineDate'};
+            $result->season ($$pub_date{'season'}) if defined $$pub_date{'season'};
+        }
     }
 
     # ...some attributes are in journalInfo (which is outside of the article)
     my $journal_info = $$source{'journalInfo'};
     if (defined $journal_info) {
-	$journal->country ($$journal_info{'country'}) if defined $$journal_info{'country'};
-	$journal->medline_ta ($$journal_info{'medlineTA'}) if defined $$journal_info{'medlineTA'};
-	$journal->medline_code ($$journal_info{'medlineCode'}) if defined $$journal_info{'medlineCode'};
-	$journal->nlm_unique_id ($$journal_info{'nlmUniqueID'}) if defined $$journal_info{'nlmUniqueID'};
+        $journal->country ($$journal_info{'country'}) if defined $$journal_info{'country'};
+        $journal->medline_ta ($$journal_info{'medlineTA'}) if defined $$journal_info{'medlineTA'};
+        $journal->medline_code ($$journal_info{'medlineCode'}) if defined $$journal_info{'medlineCode'};
+        $journal->nlm_unique_id ($$journal_info{'nlmUniqueID'}) if defined $$journal_info{'nlmUniqueID'};
     }
 
     $result->journal ($journal);
@@ -418,19 +420,19 @@ sub _convert_book_article {
     $book->series ($$from_book{'collectionTitle'}) if defined $$from_book{'collectionTitle'};
 
     if (defined $$from_book{'pubDate'}) {
-	my $pub_date = $$from_book{'pubDate'};
-	my $converted = &_convert_date ($pub_date);
-	$result->pub_date ($converted) if defined $converted;
+        my $pub_date = $$from_book{'pubDate'};
+        my $converted = &_convert_date ($pub_date);
+        $result->pub_date ($converted) if defined $converted;
 
-	# Some parts of a MEDLINE date are stored just as properties
-	# because they have almost non-parseable format :-).
-	$result->medline_date ($$pub_date{'medlineDate'}) if defined $$pub_date{'medlineDate'};
-	$result->season ($$pub_date{'season'}) if defined $$pub_date{'season'};
+        # Some parts of a MEDLINE date are stored just as properties
+        # because they have almost non-parseable format :-).
+        $result->medline_date ($$pub_date{'medlineDate'}) if defined $$pub_date{'medlineDate'};
+        $result->season ($$pub_date{'season'}) if defined $$pub_date{'season'};
     }
 
     if (defined $$from_book{'publisher'}) {
-	my $publisher = Bio::Biblio::Organisation->new();
-	$publisher->name ($$from_book{'publisher'});
+        my $publisher = Bio::Biblio::Organisation->new();
+        $publisher->name ($$from_book{'publisher'});
         $book->publisher ($publisher);
     }
 
@@ -454,67 +456,66 @@ sub _convert_article {
     $article->affiliation ($$from_article{'affiliation'}) if defined $$from_article{'affiliation'};
     $article->vernacular_title ($$from_article{'vernacularTitle'}) if defined $$from_article{'vernacularTitle'};
     $article->date_of_electronic_publication
-	($$from_article{'dateOfElectronicPublication'}) if defined $$from_article{'dateOfElectronicPublication'};
+        ($$from_article{'dateOfElectronicPublication'}) if defined $$from_article{'dateOfElectronicPublication'};
 
     if (defined $$from_article{'pagination'}) {
-	my $pagination = $$from_article{'pagination'};
-	$article->first_page ($$pagination{'startPage'}) if defined $$pagination{'startPage'};
-	$article->last_page ($$pagination{'endPage'}) if defined $$pagination{'endPage'};
-	$article->medline_page ($$pagination{'medlinePgn'}) if defined $$pagination{'medlinePgn'};
+        my $pagination = $$from_article{'pagination'};
+        $article->first_page ($$pagination{'startPage'}) if defined $$pagination{'startPage'};
+        $article->last_page ($$pagination{'endPage'}) if defined $$pagination{'endPage'};
+        $article->medline_page ($$pagination{'medlinePgn'}) if defined $$pagination{'medlinePgn'};
     }
 
     if (defined $$from_article{'abstract'}) {
-	my $abstract = $$from_article{'abstract'};
-	$article->abstract ($$abstract{'abstractText'}) if defined $$abstract{'abstractText'};
-	$article->abstract_type ('text/plain');
-	$article->rights ($$abstract{'copyrightInformation'}) if defined $$abstract{'copyrightInformation'};
+        my $abstract = $$from_article{'abstract'};
+        $article->abstract ($$abstract{'abstractText'}) if defined $$abstract{'abstractText'};
+        $article->abstract_type ('text/plain');
+        $article->rights ($$abstract{'copyrightInformation'}) if defined $$abstract{'copyrightInformation'};
     }
 
     if (defined $$from_article{'languages'}) {
-	my $languages = $$from_article{'languages'};  # ref-array
-	if ( @{ $languages } > 0) {
-	    $article->language ( $$languages[0] );
-	}
-	if ( @{ $languages } > 1) {
-	    $article->other_languages (join (',', @{ $languages }));
-	}
+        my $languages = $$from_article{'languages'};  # ref-array
+        if ( @{ $languages } > 0) {
+            $article->language ( $$languages[0] );
+        }
+        if ( @{ $languages } > 1) {
+            $article->other_languages (join (',', @{ $languages }));
+        }
     }
 
     my @authors = &_convert_providers ($$from_article{'authors'});
     if (@authors) {
-	$article->authors (\@authors);
-	$article->author_list_complete
-	    ($$from_article{'authorListComplete'}) if defined $$from_article{'authorListComplete'};
+        $article->authors (\@authors);
+        $article->author_list_complete
+            ($$from_article{'authorListComplete'}) if defined $$from_article{'authorListComplete'};
     }
 
     # references to database entries are prefixed with database name
     # (separated by a slash)
-    use Bio::Annotation::DBLink;
     if (defined $$from_article{'dataBanks'}) {
-	my $databanks = $$from_article{'dataBanks'};  # a ref-array
-	my @references;
-	foreach my $bank ( @{ $databanks } ) {
-	    my $db_name = $$bank{'dataBankName'};
-	    if (defined $$bank{'accessionNumbers'}) {
-		foreach my $accn ( @{ $$bank{'accessionNumbers'} } ) {
-		    my $dblink = Bio::Annotation::DBLink->new(-primary_id => $accn);
-		    $dblink->database ($db_name);   # it does not matter if it is undef
-		    push (@references, $dblink);
-		}
-	    }
-	}
-	if (@references) {
-	    $article->cross_references (\@references);
-	    $article->cross_references_list_complete
-		($$from_article{'dataBankListComplete'}) if defined $$from_article{'dataBankListComplete'};
-	}
+        my $databanks = $$from_article{'dataBanks'};  # a ref-array
+        my @references;
+        foreach my $bank ( @{ $databanks } ) {
+            my $db_name = $$bank{'dataBankName'};
+            if (defined $$bank{'accessionNumbers'}) {
+                foreach my $accn ( @{ $$bank{'accessionNumbers'} } ) {
+                    my $dblink = Bio::Annotation::DBLink->new(-primary_id => $accn);
+                    $dblink->database ($db_name);   # it does not matter if it is undef
+                    push (@references, $dblink);
+                }
+            }
+        }
+        if (@references) {
+            $article->cross_references (\@references);
+            $article->cross_references_list_complete
+                ($$from_article{'dataBankListComplete'}) if defined $$from_article{'dataBankListComplete'};
+        }
     }
 
     # grants are stored in an array of hashtables (each of the
     # hashtables has keys agency, grantID and acronym)
     $article->grants ($$from_article{'grants'}) if defined $$from_article{'grants'};
     $article->grant_list_complete
-	    ($$from_article{'grantListComplete'}) if defined $$from_article{'grandListComplete'};
+            ($$from_article{'grantListComplete'}) if defined $$from_article{'grandListComplete'};
 
 }
 
@@ -528,14 +529,14 @@ sub _convert_providers {
 
     my @results;
     foreach my $provider ( @{ $providers } ) {
-	if (defined $$provider{'personalName'}) {
-	    my $converted = &_convert_personal_name ($$provider{'personalName'});
-	    push (@results, $converted) if defined $converted;
-	} elsif (defined $$provider{'collectiveName'}) {
-	    push (@results, Bio::Biblio::Organisation->new(-name => $$provider{'collectiveName'}));
-	} else {
+        if (defined $$provider{'personalName'}) {
+            my $converted = &_convert_personal_name ($$provider{'personalName'});
+            push (@results, $converted) if defined $converted;
+        } elsif (defined $$provider{'collectiveName'}) {
+            push (@results, Bio::Biblio::Organisation->new(-name => $$provider{'collectiveName'}));
+        } else {
             Bio::Biblio::Provider->new();
-	}
+        }
     }
     return () unless @results;
     return @results;
