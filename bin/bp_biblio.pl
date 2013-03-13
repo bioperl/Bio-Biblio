@@ -11,7 +11,7 @@
 #   functional command-line client for querying repository and
 #   retrieving citations from it.
 #
-#   Usage: bp_biblio.PLS -h
+#   Usage: bp_biblio.pl -h
 #
 #   martin.senger@gmail.com
 #   February 2002
@@ -282,20 +282,20 @@ __END__
 
 =head1 NAME
 
-bp_biblio.PLS - bioperl client for accessing and querying a bibliographic
+bp_biblio.pl - bioperl client for accessing and querying a bibliographic
 repository.
 
 =head1 SYNOPSIS
 
 Usage:
 
-  bp_biblio.PLS [vh]
-  bp_biblio.PLS [bcFgOpq]         [-l <URL>]
-  bp_biblio.PLS [abcdDeFknmOpqrs] [-l <URL>] -i <collection-ID>
-  bp_biblio.PLS [abcdDeFknmOpqrs] [-l <URL>] - -find <keywords> \
+  bp_biblio.pl [vh]
+  bp_biblio.pl [bcFgOpq]         [-l <URL>]
+  bp_biblio.pl [abcdDeFknmOpqrs] [-l <URL>] -i <collection-ID>
+  bp_biblio.pl [abcdDeFknmOpqrs] [-l <URL>] - -find <keywords> \
          [-attrs <attrs>]...
-  bp_biblio.PLS [Vq]              [-l <URL>]
-  bp_biblio.PLS [FOq]             [-f <filename>]
+  bp_biblio.pl [Vq]              [-l <URL>]
+  bp_biblio.pl [FOq]             [-f <filename>]
 
 =head1 DESCRIPTION
 
@@ -402,34 +402,34 @@ And the remaining options:
 
 =head1 EXAMPLES
 
-  bp_biblio.PLS - -find Java -attrs abstract -find perl
+  bp_biblio.pl - -find Java -attrs abstract -find perl
 
 Several separate invocations sharing the same query collection:
 
-  bp_biblio.PLS -p -q - -find Brazma,Robinson > b.tmp
-  bp_biblio.PLS -i `cat b.tmp` -d
+  bp_biblio.pl -p -q - -find Brazma,Robinson > b.tmp
+  bp_biblio.pl -i `cat b.tmp` -d
   MEDLINE2005/10693778
   MEDLINE2005/10977099
   MEDLINE2005/11726920
   MEDLINE2005/12225585
   MEDLINE2005/12227734
-  bp_biblio.PLS -i `cat b.tmp` -g 10693778
+  bp_biblio.pl -i `cat b.tmp` -g 10693778
   <MedlineCitation Status="Completed">
    ...
   </MedlineCitation>
 
-  bp_biblio.PLS -i `cat b.tmp` -e
+  bp_biblio.pl -i `cat b.tmp` -e
   Exists: 1       Has next: 1
 
-  bp_biblio.PLS -i `cat b.tmp` -D
+  bp_biblio.pl -i `cat b.tmp` -D
   Destroyed OK.
 
-  bp_biblio.PLS -i `cat b.tmp` -e
+  bp_biblio.pl -i `cat b.tmp` -e
   Exists: 0       Has next: 0
 
 Access to controlled vocabularies:
 
-  bp_biblio.PLS -Vn
+  bp_biblio.pl -Vn
   MEDLINE2005/JournalArticle/properties
   MEDLINENEW/resource_types
   MEDLINE2005/resource_types
@@ -439,7 +439,7 @@ Access to controlled vocabularies:
   repository_subsets
   MEDLINE2005/*/citation_subset
 
-  bp_biblio.PLS -Vv::MEDLINE2005/JournalArticle/properties
+  bp_biblio.pl -Vv::MEDLINE2005/JournalArticle/properties
   AllText
   ID
   PMID
@@ -448,9 +448,9 @@ Access to controlled vocabularies:
 
 Converting local XML MEDLINE file:
 
-  bp_biblio.PLS -g 10693778 > a_file.xml
-  bp_biblio.PLS -f a_file.xml -Oo   ... to Perl objects
-  bp_biblio.PLS -f a_file.xml -Or   ... as a raw hash
+  bp_biblio.pl -g 10693778 > a_file.xml
+  bp_biblio.pl -f a_file.xml -Oo   ... to Perl objects
+  bp_biblio.pl -f a_file.xml -Or   ... as a raw hash
 
 =head1 ENVIRONMENT VARIABLES
 
@@ -460,7 +460,7 @@ Use this if you use this script on a machine which needs to access
 remote HTTP targets via a proxy server.  For example:
 
   export HTTPPROXY=http://128.243.220.41:3128
-  bp_biblio.PLS -c
+  bp_biblio.pl -c
 
 =head1 FEEDBACK
 
