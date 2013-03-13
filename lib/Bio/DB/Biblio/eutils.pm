@@ -127,14 +127,15 @@ followed by internal methods.
 
 
 package Bio::DB::Biblio::eutils;
-use vars qw($DEFAULT_URN);
 use strict;
+use warnings;
 
 use LWP::Simple;
 use XML::Twig;
 use URI::Escape;
-use base qw(Bio::Biblio Bio::DB::BiblioI);
+use parent qw(Bio::Biblio Bio::DB::BiblioI);
 
+our $DEFAULT_URN;
 our $EFETCH      = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
 our $ESEARCH     = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
 our $MAX_RECORDS = 100_000;
@@ -173,8 +174,8 @@ sub _initialize {
     # there) - changing '-key' into '_key'
     my $new_key;
     foreach my $key (keys %param) {
-	($new_key = $key) =~ s/^-/_/;
-	$self->{ $new_key } = $param { $key };
+        ($new_key = $key) =~ s/^-/_/;
+        $self->{ $new_key } = $param { $key };
     }
 
 
@@ -213,12 +214,12 @@ sub db{
     my($self,$arg) = @_;
 
     if($arg){
-      my %ok = map {$_=>1} qw(pubmed pmc journals);
-      if($ok{lc($arg)}){
-        $self->{'db'} = lc($arg);
-      } else {
-        $self->warn("invalid db $arg, keeping value as ".$self->{'db'} || 'pubmed');
-      }
+        my %ok = map {$_=>1} qw(pubmed pmc journals);
+        if($ok{lc($arg)}){
+            $self->{'db'} = lc($arg);
+        } else {
+            $self->warn("invalid db $arg, keeping value as ".$self->{'db'} || 'pubmed');
+        }
     }
     return $self->{'db'};
 }
@@ -238,20 +239,20 @@ sub db{
 =cut
 
 sub get_collection_id {
-   return shift->collection_id();
+    return shift->collection_id();
 }
 
 sub get_count {
-  return shift->count();
+    return shift->count();
 }
 
 sub get_by_id {
-  my $self = shift;
-  my $id = shift;
-  my $db = $self->db || 'pubmed';
-  $self->throw("must provide valid ID, not undef") unless defined($id);
-  my $xml = get($EFETCH.'?rettype=abstract&retmode=xml&db='.$db.'&id='.$id);
-  return $xml;
+    my $self = shift;
+    my $id = shift;
+    my $db = $self->db || 'pubmed';
+    $self->throw("must provide valid ID, not undef") unless defined($id);
+    my $xml = get($EFETCH.'?rettype=abstract&retmode=xml&db='.$db.'&id='.$id);
+    return $xml;
 }
 
 =head2 reset_retrieval
@@ -266,8 +267,8 @@ sub get_by_id {
 =cut
 
 sub reset_retrieval {
-  shift->cursor(0);
-  return 1;
+    shift->cursor(0);
+    return 1;
 }
 
 =head2 get_next
@@ -282,14 +283,14 @@ sub reset_retrieval {
 =cut
 
 sub get_next {
-  my $self = shift;
+    my $self = shift;
 
-  return unless $self->has_next;
+    return unless $self->has_next;
 
-  my $xml = $self->get_by_id( @{ $self->ids }[$self->cursor] );
-  $self->cursor( $self->cursor + 1 );
+    my $xml = $self->get_by_id( @{ $self->ids }[$self->cursor] );
+    $self->cursor( $self->cursor + 1 );
 
-  return $xml;
+    return $xml;
 }
 
 =head2 get_more
@@ -304,17 +305,17 @@ sub get_next {
 =cut
 
 sub get_more {
-  my ($self,$more) = @_;
+    my ($self,$more) = @_;
 
-  my @return = ();
+    my @return = ();
 
-  for(1..$more){
-    my $next = $self->get_next();
-    last unless $next;
-    push @return, $next;
-  }
+    for(1..$more){
+        my $next = $self->get_next();
+        last unless $next;
+        push @return, $next;
+    }
 
-  return \@return;
+    return \@return;
 }
 
 =head2 has_next
@@ -329,8 +330,8 @@ sub get_more {
 =cut
 
 sub has_next {
-  my $self = shift;
-  return ($self->cursor < $self->count) ? 1 : undef;
+    my $self = shift;
+    return ($self->cursor < $self->count) ? 1 : undef;
 }
 
 
@@ -348,49 +349,49 @@ sub has_next {
 =cut
 
 sub find {
-  my ($self,$query) = @_;
+    my ($self,$query) = @_;
 
-  $query = uri_escape($query);
+    $query = uri_escape($query);
 
-  my $db = $self->db || 'pubmed';
+    my $db = $self->db || 'pubmed';
 
-  my $url = $ESEARCH."?usehistory=y&db=$db&retmax=$MAX_RECORDS&term=$query";
+    my $url = $ESEARCH."?usehistory=y&db=$db&retmax=$MAX_RECORDS&term=$query";
 
-  my $xml = get($url) or $self->throw("couldn't retrieve results from $ESEARCH: $!");
+    my $xml = get($url) or $self->throw("couldn't retrieve results from $ESEARCH: $!");
 
-  $self->twig->parse($xml);
+    $self->twig->parse($xml);
 
-  my @ids = map {$_->text} $self->twig->get_xpath('//IdList//Id');
-  $self->ids(\@ids);
+    my @ids = map {$_->text} $self->twig->get_xpath('//IdList//Id');
+    $self->ids(\@ids);
 
-  ##
-  #should we be using the ids, or the count tag?
-  ##
-  my($count_element)  = $self->twig->get_xpath('//Count');
-  if (defined $count_element) {
-    my $count = $count_element->text();
-    $self->count(scalar(@ids));
-  }
+    ##
+    #should we be using the ids, or the count tag?
+    ##
+    my($count_element)  = $self->twig->get_xpath('//Count');
+    if (defined $count_element) {
+        my $count = $count_element->text();
+        $self->count(scalar(@ids));
+    }
 
-  my($retmax_element) = $self->twig->get_xpath('//RetMax');
-  if (defined $retmax_element) {
-    my $retmax = $retmax_element->text();
-  }
+    my($retmax_element) = $self->twig->get_xpath('//RetMax');
+    if (defined $retmax_element) {
+        my $retmax = $retmax_element->text();
+    }
 
-  my($querykey_element) = $self->twig->get_xpath('//QueryKey');
-  if (defined $querykey_element) {
-    $self->query_key($querykey_element->text());
-  }
+    my($querykey_element) = $self->twig->get_xpath('//QueryKey');
+    if (defined $querykey_element) {
+        $self->query_key($querykey_element->text());
+    }
 
-  my($webenv_element) = $self->twig->get_xpath('//WebEnv');
-  if (defined $webenv_element) {
-    $self->collection_id($webenv_element->text());
-  }
+    my($webenv_element) = $self->twig->get_xpath('//WebEnv');
+    if (defined $webenv_element) {
+        $self->collection_id($webenv_element->text());
+    }
 
-  #initialize/reset cursor
-  $self->cursor(0);
+    #initialize/reset cursor
+    $self->cursor(0);
 
-  return $self;
+    return $self;
 }
 
 
@@ -406,9 +407,9 @@ sub find {
 =cut
 
 sub get_all_ids {
-  my $self = shift;
-  return $self->ids() if $self->ids();
-  return ();
+    my $self = shift;
+    return $self->ids() if $self->ids();
+    return ();
 }
 
 =head2 get_all
@@ -423,16 +424,16 @@ sub get_all_ids {
 =cut
 
 sub get_all {
-  my ($self) = shift;
+    my ($self) = shift;
 
-  my $db = $self->db || 'pubmed';
+    my $db = $self->db || 'pubmed';
 
-  my $xml = get($EFETCH.'?rettype=abstract&retmode=xml&db=pubmed&query_key='.
-                $self->query_key.'&WebEnv='.$self->collection_id.
-                '&retstart=1&retmax='.$MAX_RECORDS
-               );
+    my $xml = get($EFETCH.'?rettype=abstract&retmode=xml&db=pubmed&query_key='.
+                  $self->query_key.'&WebEnv='.$self->collection_id.
+                  '&retstart=1&retmax='.$MAX_RECORDS
+                  );
 
-  return $xml;
+    return $xml;
 }
 
 =head2 exists
@@ -447,8 +448,7 @@ sub get_all {
 =cut
 
 sub exists {
-  return;
-
+    return;
 }
 
 =head2 destroy
@@ -463,8 +463,7 @@ sub exists {
 =cut
 
 sub destroy {
-  return;
-
+    return;
 }
 
 =head2 get_vocabulary_names
@@ -479,7 +478,7 @@ sub destroy {
 =cut
 
 sub get_vocabulary_names {
-  return [];
+    return [];
 }
 
 =head2 contains
@@ -494,7 +493,7 @@ sub get_vocabulary_names {
 =cut
 
 sub contains {
-  return;
+    return;
 }
 
 =head2 get_entry_description
@@ -509,7 +508,7 @@ sub contains {
 =cut
 
 sub get_entry_description {
-  return;
+    return;
 }
 
 =head2 get_all_values
@@ -524,7 +523,7 @@ sub get_entry_description {
 =cut
 
 sub get_all_values {
-  return;
+    return;
 }
 
 =head2 get_all_entries
@@ -539,7 +538,7 @@ sub get_all_values {
 =cut
 
 sub get_all_entries {
-  return;
+    return;
 }
 
 =head1 Internal methods unrelated to Bio::DB::BiblioI
@@ -556,11 +555,11 @@ sub get_all_entries {
 =cut
 
 sub cursor {
-  my $self = shift;
-  my $arg  = shift;
+    my $self = shift;
+    my $arg  = shift;
 
-  return $self->{'cursor'} = $arg if defined($arg);
-  return $self->{'cursor'};
+    return $self->{'cursor'} = $arg if defined($arg);
+    return $self->{'cursor'};
 }
 
 =head2 twig
@@ -575,10 +574,10 @@ sub cursor {
 =cut
 
 sub twig {
-  my $self = shift;
+    my $self = shift;
 
-  return $self->{'twig'} = shift if @_;
-  return $self->{'twig'};
+    return $self->{'twig'} = shift if @_;
+    return $self->{'twig'};
 }
 
 =head2 ids
@@ -593,10 +592,10 @@ sub twig {
 =cut
 
 sub ids {
-  my $self = shift;
+    my $self = shift;
 
-  return $self->{'ids'} = shift if @_;
-  return $self->{'ids'};
+    return $self->{'ids'} = shift if @_;
+    return $self->{'ids'};
 }
 
 =head2 collection_id
@@ -611,10 +610,10 @@ sub ids {
 =cut
 
 sub collection_id {
-  my $self = shift;
+    my $self = shift;
 
-  return $self->{'collection_id'} = shift if @_;
-  return $self->{'collection_id'};
+    return $self->{'collection_id'} = shift if @_;
+    return $self->{'collection_id'};
 }
 
 =head2 count
@@ -629,10 +628,10 @@ sub collection_id {
 =cut
 
 sub count {
-  my $self = shift;
+    my $self = shift;
 
-  return $self->{'count'} = shift if @_;
-  return $self->{'count'};
+    return $self->{'count'} = shift if @_;
+    return $self->{'count'};
 }
 
 =head2 query_key
@@ -647,10 +646,10 @@ sub count {
 =cut
 
 sub query_key {
-  my $self = shift;
+    my $self = shift;
 
-  return $self->{'query_key'} = shift if @_;
-  return $self->{'query_key'};
+    return $self->{'query_key'} = shift if @_;
+    return $self->{'query_key'};
 }
 
 

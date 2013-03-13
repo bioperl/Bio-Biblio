@@ -45,8 +45,8 @@ BEGIN {
 
     # help wanted?
     if ($opt_h) {
-	print get_usage;
-	exit 0;
+        print get_usage;
+        exit 0;
     }
 }
 
@@ -87,7 +87,7 @@ my @location   = ('-location', $opt_l) if defined $opt_l;
 my @collection = ('-collection_id', $opt_i) if defined $opt_i;
 my @destroy    = ('-destroy_on_exit', 0) if $opt_k or $opt_p or $opt_i;
 my @httpproxy  = ('-httpproxy', $ENV{'HTTPPROXY'}) if defined $ENV{'HTTPPROXY'};
-my $biblio = new Bio::Biblio (@location, @collection, @destroy, @httpproxy);
+my $biblio = Bio::Biblio->new(@location, @collection, @destroy, @httpproxy);
 
 die "Stopped. No success in accessing the bibliographic repository.\n" unless $biblio;
 
@@ -102,11 +102,11 @@ die "Stopped. No success in accessing the bibliographic repository.\n" unless $b
 my ($keywords, $attrs, $next);
 while ($next = shift) {
     if ($next eq '-find') {
-	$biblio = &_find ($biblio, $keywords, $attrs) if $keywords;
-	$keywords = shift;
-	undef $attrs;
+        $biblio = &_find ($biblio, $keywords, $attrs) if $keywords;
+        $keywords = shift;
+        undef $attrs;
     } elsif ($next eq '-attrs') {
-	$attrs = shift;
+        $attrs = shift;
     }
 }
 $biblio = &_find ($biblio, $keywords, $attrs) if $keywords;
@@ -139,7 +139,7 @@ if ($opt_r) {
 $opt_m = 100000000 if $opt_a;
 if (defined $opt_m) {
     foreach my $cit (@{ $biblio->get_more ($opt_m) }) {
-	&convert_and_print ($cit);
+        &convert_and_print ($cit);
     }
 }
 
@@ -154,9 +154,9 @@ if ($opt_e) {
     $has_next = '0' unless $has_next;
 
     if ($opt_q) {
-	print "$exists\n$has_next\n";
+        print "$exists\n$has_next\n";
     } else {
-	print "Exists: $exists\tHas next: $has_next\n";
+        print "Exists: $exists\tHas next: $has_next\n";
     }
 }
 
@@ -177,30 +177,30 @@ if ($opt_V) {
 
     # ...print all vocabulary names (-Vn)
     if ($opt_V =~ /^n/) {
-	print join ("\n", @{ $biblio->get_vocabulary_names }) . "\n";
+        print join ("\n", @{ $biblio->get_vocabulary_names }) . "\n";
 
     } else {
-	my ($arg, $name, $value) = split (/\:\:/, $opt_V, 3);
+        my ($arg, $name, $value) = split (/\:\:/, $opt_V, 3);
 
-	# ...print all values from a given vocabulary (-Vv::<name>)
-	if ($opt_V =~ /^v/) {
-	    print join ("\n", @{ $biblio->get_all_values ($name) }) . "\n";
+        # ...print all values from a given vocabulary (-Vv::<name>)
+        if ($opt_V =~ /^v/) {
+            print join ("\n", @{ $biblio->get_all_values ($name) }) . "\n";
 
-	# ...print all entries from a given vocabulary (-Va::<name>)
-	} elsif ($opt_V =~ /^a/) {
-	    print Data::Dumper->Dump ( [$biblio->get_all_entries ($name)], ['All entries']);
+        # ...print all entries from a given vocabulary (-Va::<name>)
+        } elsif ($opt_V =~ /^a/) {
+            print Data::Dumper->Dump ( [$biblio->get_all_entries ($name)], ['All entries']);
 
-	# ...print description of a given vocabulary entry (-Vd::<name>::<value>)
-	} elsif ($opt_V =~ /^d/) {
-	    print $biblio->get_entry_description ($name, $value) . "\n";
+        # ...print description of a given vocabulary entry (-Vd::<name>::<value>)
+        } elsif ($opt_V =~ /^d/) {
+            print $biblio->get_entry_description ($name, $value) . "\n";
 
-	# ...check existence of a vocabulary value (-Ve::<name>::<value>)
-	} elsif ($opt_V =~ /^e/) {
+        # ...check existence of a vocabulary value (-Ve::<name>::<value>)
+        } elsif ($opt_V =~ /^e/) {
             my $contains = $biblio->contains ($name, $value);
-	    $contains = '0' unless $contains;
-	    print "Value '$value' in vocabulary '$name': $contains\n" unless $opt_q;
-	    print "$contains\n" if $opt_q;
-	}
+            $contains = '0' unless $contains;
+            print "Value '$value' in vocabulary '$name': $contains\n" unless $opt_q;
+            print "$contains\n" if $opt_q;
+        }
     }
 }
 
@@ -208,12 +208,12 @@ sub _find {
     my ($biblio, $keywords, $attrs) = @_;
     $| = 1;
     print "Looking for '$keywords'" . ($attrs ? " in attributes '$attrs'..." : "...")
-	unless $opt_q;
+        unless $opt_q;
     my ($new_biblio) = $biblio->find ($keywords, $attrs);
     print "\tFound " . $new_biblio->get_count . "\n"
-	unless $opt_q;
+        unless $opt_q;
     print "\tReturned collection is '" . $new_biblio->get_collection_id . "'.\n"
-	if $opt_k and not $opt_q;
+        if $opt_k and not $opt_q;
     return $new_biblio;
 }
 
@@ -222,9 +222,9 @@ sub convert_and_print {
 
     # if no -O option given or if it is -Ox we are happy returning XML string
     unless (defined $opt_O and $opt_O !~ /^x/) {
-	return if $opt_f;   # we do not do a simple file reading
-	&print_one ($citation);
-	return;
+        return if $opt_f;   # we do not do a simple file reading
+        &print_one ($citation);
+        return;
     }
 
     my @args;
@@ -233,25 +233,25 @@ sub convert_and_print {
     # Biblio objects - but there may be more types of them depending
     # also on -F (which format the citation is in)
     if ($opt_O =~ /^r/) {
-	push (@args, ('-result' => 'raw'));
+        push (@args, ('-result' => 'raw'));
     } elsif ($opt_F and $opt_F =~ /^p/) {
-	push (@args, ('-result' => 'pubmed2ref'));
+        push (@args, ('-result' => 'pubmed2ref'));
     }
     # default: -result => 'medline2ref'
 
     # an argument to specify that we want parse XML (which we always want
     # but there can be various XML formats)
     if ($opt_F and $opt_F =~ /^p/) {
-	push (@args, ('-format' => 'pubmedxml'));
+        push (@args, ('-format' => 'pubmedxml'));
     } else {
-	push (@args, ('-format' => 'medlinexml'));
+        push (@args, ('-format' => 'medlinexml'));
     }
 
     # where to take the citation from
     if ($opt_f) {
-	push (@args, ('-file' => $citation));
+        push (@args, ('-file' => $citation));
     } else {
-	push (@args, ('-data' => $citation));
+        push (@args, ('-data' => $citation));
     }
 
     # make an instance of a converter
@@ -259,7 +259,7 @@ sub convert_and_print {
 
     # and finally make the conversion
     while (my $bibref = $io->next_bibref) {
-	&print_one ($bibref);
+        &print_one ($bibref);
     }
 #    return $io->next_bibref;
 }
@@ -268,11 +268,11 @@ sub print_one {
     my ($citation) = @_;
     return unless defined $citation;
     if (ref (\$citation) eq 'SCALAR') {
-	print $citation;
+        print $citation;
     } elsif (ref ($citation) =~ /^HASH|ARRAY|SCALAR$/o) {
-	print Data::Dumper->Dump ( [$citation], ['Citation']);
+        print Data::Dumper->Dump ( [$citation], ['Citation']);
     } else {
-	print $citation->print_me;
+        print $citation->print_me;
     }
 }
 

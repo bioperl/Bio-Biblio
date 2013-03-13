@@ -109,9 +109,9 @@ This software is provided "as is" without warranty of any kind.
 
 package Bio::Biblio::Book;
 use strict;
+use warnings;
 
-
-use base qw(Bio::Biblio::Ref);
+use parent qw(Bio::Biblio::Ref);
 
 #
 # a closure with a list of allowed attribute names (these names
@@ -121,29 +121,29 @@ use base qw(Bio::Biblio::Ref);
 #
 {
     my %_allowed =
-	(
-	 _edition => undef,
-	 _editor => 'Bio::Biblio::Provider',
-	 _isbn => undef,
-	 _series => undef,
-	 _title => undef,
-	 _volume => undef,
+        (
+         _edition => undef,
+         _editor => 'Bio::Biblio::Provider',
+         _isbn => undef,
+         _series => undef,
+         _title => undef,
+         _volume => undef,
     );
 
     # return 1 if $attr is allowed to be set/get in this class
     sub _accessible {
-	my ($self, $attr) = @_;
-	exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
+        my ($self, $attr) = @_;
+        exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
     }
 
     # return an expected type of given $attr
     sub _attr_type {
-	my ($self, $attr) = @_;
-	if (exists $_allowed{$attr}) {
-	    return $_allowed{$attr};
-	} else {
-	    return $self->SUPER::_attr_type ($attr);
-	}
+        my ($self, $attr) = @_;
+        if (exists $_allowed{$attr}) {
+            return $_allowed{$attr};
+        } else {
+            return $self->SUPER::_attr_type ($attr);
+        }
     }
 }
 

@@ -135,11 +135,12 @@ methods. Internal methods are preceded with a _
 
 package Bio::Biblio::Ref;
 use strict;
-use vars qw($AUTOLOAD);
+use warnings;
+our $AUTOLOAD;
 
 use Bio::Annotation::DBLink;
 
-use base qw(Bio::Biblio::BiblioBase);
+use parent qw(Bio::Biblio::BiblioBase);
 
 #
 # a closure with a list of allowed attribute names (these names
@@ -149,48 +150,48 @@ use base qw(Bio::Biblio::BiblioBase);
 #
 {
     my %_allowed =
-	(
-	 _author_list_complete => undef,
-	 _authors => 'ARRAY',  # of Bio::Biblio::Provider
-	 _cross_references => 'ARRAY',   # of Bio::Annotation::DBLink
-	 _cross_references_list_complete => undef,
-	 _abstract => undef,
-	 _abstract_language => undef,
-	 _abstract_type => undef,
-	 _codes => 'HASH',
-	 _contributors => 'ARRAY',  # of Bio::Biblio::Provider
-	 _date => undef,
-	 _date_completed => undef,
-	 _date_created => undef,
-	 _date_revised => undef,
-	 _format => undef,
-	 _identifier => undef,
-	 _keywords => 'HASH',
-	 _language => undef,
-	 _last_modified_date => undef,
-	 _publisher => 'Bio::Biblio::Provider',
-	 _repository_subset => undef,
-	 _rights => undef,
-	 _spatial_location => undef,
-	 _subject_headings => 'HASH',
-	 _subject_headings_source => undef,
-	 _temporal_period => undef,
-	 _title => undef,
-	 _toc => undef,
-	 _toc_type => undef,
-	 _type => undef,
-	 );
+        (
+         _author_list_complete => undef,
+         _authors => 'ARRAY',  # of Bio::Biblio::Provider
+         _cross_references => 'ARRAY',   # of Bio::Annotation::DBLink
+         _cross_references_list_complete => undef,
+         _abstract => undef,
+         _abstract_language => undef,
+         _abstract_type => undef,
+         _codes => 'HASH',
+         _contributors => 'ARRAY',  # of Bio::Biblio::Provider
+         _date => undef,
+         _date_completed => undef,
+         _date_created => undef,
+         _date_revised => undef,
+         _format => undef,
+         _identifier => undef,
+         _keywords => 'HASH',
+         _language => undef,
+         _last_modified_date => undef,
+         _publisher => 'Bio::Biblio::Provider',
+         _repository_subset => undef,
+         _rights => undef,
+         _spatial_location => undef,
+         _subject_headings => 'HASH',
+         _subject_headings_source => undef,
+         _temporal_period => undef,
+         _title => undef,
+         _toc => undef,
+         _toc_type => undef,
+         _type => undef,
+         );
 
     # return 1 if $attr is allowed to be set/get in this class
     sub _accessible {
-	my ($self, $attr) = @_;
-	exists $_allowed{$attr};
+        my ($self, $attr) = @_;
+        exists $_allowed{$attr};
     }
 
     # return an expected type of given $attr
     sub _attr_type {
-	my ($self, $attr) = @_;
-	$_allowed{$attr};
+        my ($self, $attr) = @_;
+        $_allowed{$attr};
     }
 }
 
@@ -199,7 +200,7 @@ use base qw(Bio::Biblio::BiblioBase);
 
  Usage   : $self->add_cross_reference
                (Bio::Annotation::DBLink->new(-database   => 'EMBL',
-					     -primary_id => 'V00808');
+                                             -primary_id => 'V00808');
  Function: adding a link to a database entry
  Returns : new value of 'cross_references'
  Args    : an object of type Bio::Annotation::DBLink
@@ -209,10 +210,10 @@ use base qw(Bio::Biblio::BiblioBase);
 sub add_cross_reference {
     my ($self, $value) = @_;
     $self->throw ($self->_wrong_type_msg (ref $value, 'Bio::Annotation::DBLink'))
-	unless (UNIVERSAL::isa ($value, 'Bio::Annotation::DBLink'));
+        unless (UNIVERSAL::isa ($value, 'Bio::Annotation::DBLink'));
     (defined $self->cross_references) ?
-	push (@{ $self->cross_references }, $value) :
-	    return $self->cross_references ( [$value] );
+        push (@{ $self->cross_references }, $value) :
+            return $self->cross_references ( [$value] );
     return $self->cross_references;
 }
 
@@ -230,10 +231,10 @@ sub add_cross_reference {
 sub add_author {
     my ($self, $value) = @_;
     $self->throw ($self->_wrong_type_msg (ref $value, 'Bio::Biblio::Provider'))
-	unless (UNIVERSAL::isa ($value, 'Bio::Biblio::Provider'));
+        unless (UNIVERSAL::isa ($value, 'Bio::Biblio::Provider'));
     (defined $self->authors) ?
-	push (@{ $self->authors }, $value) :
-	    return $self->authors ( [$value] );
+        push (@{ $self->authors }, $value) :
+            return $self->authors ( [$value] );
     return $self->authors;
 }
 
@@ -249,10 +250,10 @@ sub add_author {
 sub add_contributor {
     my ($self, $value) = @_;
     $self->throw ($self->_wrong_type_msg (ref $value, 'Bio::Biblio::Provider'))
-	unless (UNIVERSAL::isa ($value, 'Bio::Biblio::Provider'));
+        unless (UNIVERSAL::isa ($value, 'Bio::Biblio::Provider'));
     (defined $self->contributors) ?
-	push (@{ $self->contributors }, $value) :
-	    return $self->contributors ( [$value] );
+        push (@{ $self->contributors }, $value) :
+            return $self->contributors ( [$value] );
     return $self->contributors;
 }
 

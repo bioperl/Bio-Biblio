@@ -198,7 +198,7 @@ with an underscore _.
 
 package Bio::Biblio;
 use strict;
-use warnings;
+#use warnings;
 use parent qw(Bio::Root::Root Bio::DB::BiblioI);
 
 # -----------------------------------------------------------------------------

@@ -92,8 +92,9 @@ message. You need to call them on a Bio::Biblio object.
 
 package Bio::DB::BiblioI;
 use strict;
+use warnings;
 
-use base qw(Bio::Root::RootI);
+use parent qw(Bio::Root::RootI);
 
 # -----------------------------------------------------------------------------
 
@@ -111,8 +112,8 @@ and then to access that collection.
 =cut
 
 sub get_collection_id {
-   my ($self,@args) = @_;
-   $self->throw_not_implemented();
+    my ($self,@args) = @_;
+    $self->throw_not_implemented();
 }
 
 
@@ -475,7 +476,7 @@ This is one way how to get it and print it:
     my $name = 'MEDLINE2005/JournalArticle/properties';
     use Data::Dumper;
     print Data::Dumper->Dump ( [$biblio->get_all_entries ($name)],
-			       ['All entries']);
+                               ['All entries']);
 
 =cut
 

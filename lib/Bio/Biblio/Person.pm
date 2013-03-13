@@ -109,9 +109,9 @@ This software is provided "as is" without warranty of any kind.
 
 package Bio::Biblio::Person;
 use strict;
+use warnings;
 
-
-use base qw(Bio::Biblio::Provider);
+use parent qw(Bio::Biblio::Provider);
 
 #
 # a closure with a list of allowed attribute names (these names
@@ -121,32 +121,32 @@ use base qw(Bio::Biblio::Provider);
 #
 {
     my %_allowed =
-	(
- 	 _affiliation => undef,
-	 _email => undef,
-	 _firstname => undef,
-	 _forename => undef,
-	 _initials => undef,
-	 _lastname => undef,
-	 _middlename => undef,
-	 _postal_address => undef,
-	 _suffix => undef,
-	 );
+        (
+         _affiliation => undef,
+         _email => undef,
+         _firstname => undef,
+         _forename => undef,
+         _initials => undef,
+         _lastname => undef,
+         _middlename => undef,
+         _postal_address => undef,
+         _suffix => undef,
+         );
 
     # return 1 if $attr is allowed to be set/get in this class
     sub _accessible {
-	my ($self, $attr) = @_;
-	exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
+        my ($self, $attr) = @_;
+        exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
     }
 
     # return an expected type of given $attr
     sub _attr_type {
-	my ($self, $attr) = @_;
-	if (exists $_allowed{$attr}) {
-	    return $_allowed{$attr};
-	} else {
-	    return $self->SUPER::_attr_type ($attr);
-	}
+        my ($self, $attr) = @_;
+        if (exists $_allowed{$attr}) {
+            return $_allowed{$attr};
+        } else {
+            return $self->SUPER::_attr_type ($attr);
+        }
     }
 }
 

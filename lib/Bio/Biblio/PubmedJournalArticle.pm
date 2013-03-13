@@ -115,9 +115,10 @@ This software is provided "as is" without warranty of any kind.
 
 package Bio::Biblio::PubmedJournalArticle;
 use strict;
-use vars qw(@ISA);
+use warnings;
+our @ISA;
 
-use base qw(Bio::Biblio::PubmedArticle Bio::Biblio::MedlineJournalArticle);
+use parent qw(Bio::Biblio::PubmedArticle Bio::Biblio::MedlineJournalArticle);
 
 #
 # a closure with a list of allowed attribute names (these names
@@ -127,31 +128,31 @@ use base qw(Bio::Biblio::PubmedArticle Bio::Biblio::MedlineJournalArticle);
 #
 {
     my %_allowed =
-	(
-	 );
+        (
+         );
 
     # return 1 if $attr is allowed to be set/get in this class
     sub _accessible {
-	my ($self, $attr) = @_;
-	return 1 if exists $_allowed{$attr};
+        my ($self, $attr) = @_;
+        return 1 if exists $_allowed{$attr};
         foreach my $parent (@ISA) {
-	    return 1 if $parent->_accessible ($attr);
-	}
+            return 1 if $parent->_accessible ($attr);
+        }
     }
 
     # return an expected type of given $attr
     sub _attr_type {
-	my ($self, $attr) = @_;
-	if (exists $_allowed{$attr}) {
-	    return $_allowed{$attr};
-	} else {
-	    foreach my $parent (@ISA) {
-		if ($parent->_accessible ($attr)) {
-		    return $parent->_attr_type ($attr);
-		}
-	    }
-	}
-	return 'unknown';
+        my ($self, $attr) = @_;
+        if (exists $_allowed{$attr}) {
+            return $_allowed{$attr};
+        } else {
+            foreach my $parent (@ISA) {
+                if ($parent->_accessible ($attr)) {
+                    return $parent->_attr_type ($attr);
+                }
+            }
+        }
+        return 'unknown';
     }
 }
 

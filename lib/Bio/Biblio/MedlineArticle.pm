@@ -147,9 +147,9 @@ This software is provided "as is" without warranty of any kind.
 
 package Bio::Biblio::MedlineArticle;
 use strict;
+use warnings;
 
-
-use base qw(Bio::Biblio::Article);
+use parent qw(Bio::Biblio::Article);
 
 #
 # a closure with a list of allowed attribute names (these names
@@ -159,55 +159,55 @@ use base qw(Bio::Biblio::Article);
 #
 {
     my %_allowed =
-	(
-	 _affiliation => undef,
-	 _chemicals => 'ARRAY',
-	 _citation_owner => undef,
-	 _comment_ins => 'ARRAY',
-	 _comment_ons => 'ARRAY',
-	 _date_of_electronic_publication => undef,
-	 _erratum_fors => 'ARRAY',
-	 _erratum_ins => 'ARRAY',
-	 _gene_symbols => undef,
-	 _general_notes => 'ARRAY',
-	 _grant_list_complete => undef,
-	 _grants => 'ARRAY',
-	 _medline_date => undef,
-	 _medline_id => undef,
-	 _medline_page => undef,
-	 _mesh_headings => 'ARRAY',
-	 _number_of_references => undef,
-	 _original_report_ins => 'ARRAY',
-	 _other_abstracts => 'ARRAY',
-	 _other_ids => 'ARRAY',
-	 _other_languages => undef,
-	 _pmid => undef,
-	 _republished_froms => 'ARRAY',
-	 _republished_ins => 'ARRAY',
-	 _retraction_ins => 'ARRAY',
-	 _retraction_ofs => 'ARRAY',
-	 _season => undef,
-	 _status => undef,
-	 _summary_for_patients_ins => 'ARRAY',
-	 _update_ins => 'ARRAY',
-	 _update_ofs => 'ARRAY',
-	 _vernacular_title => undef,
-	 );
+        (
+         _affiliation => undef,
+         _chemicals => 'ARRAY',
+         _citation_owner => undef,
+         _comment_ins => 'ARRAY',
+         _comment_ons => 'ARRAY',
+         _date_of_electronic_publication => undef,
+         _erratum_fors => 'ARRAY',
+         _erratum_ins => 'ARRAY',
+         _gene_symbols => undef,
+         _general_notes => 'ARRAY',
+         _grant_list_complete => undef,
+         _grants => 'ARRAY',
+         _medline_date => undef,
+         _medline_id => undef,
+         _medline_page => undef,
+         _mesh_headings => 'ARRAY',
+         _number_of_references => undef,
+         _original_report_ins => 'ARRAY',
+         _other_abstracts => 'ARRAY',
+         _other_ids => 'ARRAY',
+         _other_languages => undef,
+         _pmid => undef,
+         _republished_froms => 'ARRAY',
+         _republished_ins => 'ARRAY',
+         _retraction_ins => 'ARRAY',
+         _retraction_ofs => 'ARRAY',
+         _season => undef,
+         _status => undef,
+         _summary_for_patients_ins => 'ARRAY',
+         _update_ins => 'ARRAY',
+         _update_ofs => 'ARRAY',
+         _vernacular_title => undef,
+         );
 
     # return 1 if $attr is allowed to be set/get in this class
     sub _accessible {
-	my ($self, $attr) = @_;
-	exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
+        my ($self, $attr) = @_;
+        exists $_allowed{$attr} or $self->SUPER::_accessible ($attr);
     }
 
     # return an expected type of given $attr
     sub _attr_type {
-	my ($self, $attr) = @_;
-	if (exists $_allowed{$attr}) {
-	    return $_allowed{$attr};
-	} else {
-	    return $self->SUPER::_attr_type ($attr);
-	}
+        my ($self, $attr) = @_;
+        if (exists $_allowed{$attr}) {
+            return $_allowed{$attr};
+        } else {
+            return $self->SUPER::_attr_type ($attr);
+        }
     }
 }
 

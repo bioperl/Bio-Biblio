@@ -220,12 +220,12 @@ methods. Internal methods are preceded with a _
 # Let the code begin...
 
 package Bio::Biblio::IO;
-
 use strict;
+use warnings;
 
 use Symbol;
 
-use base qw(Bio::Root::Root Bio::Root::IO);
+use parent qw(Bio::Root::Root Bio::Root::IO);
 
 my $entry = 0;
 
@@ -237,44 +237,44 @@ sub new {
     # 'real-work-doing' class (e.g. Bio::Biblio::IO::medlinexml) then
     # we want to call SUPER to create and bless an object
     if( $class =~ /Bio::Biblio::IO::(\S+)/ ) {
-	my ($self) = $class->SUPER::new (@args);
-	$self->_initialize (@args);
-	return $self;
+        my ($self) = $class->SUPER::new (@args);
+        $self->_initialize (@args);
+        return $self;
 
     # this is called only the first time when somebody calls: 'new
     # Bio::Biblio::IO (...)', and it actually loads a 'real-work-doing'
     # module and call this new() method again (unless the loaded
     # module has its own new() method)
     } else {
-	my %param = @args;
-	@param{ map { lc $_ } keys %param } = values %param; # lowercase keys
-	my $format = $param{'-format'} ||
-	    $class->_guess_format( $param{-file} || $ARGV[0] ) ||
-		'medlinexml';
-	$format = "\L$format";	# normalize capitalization to lower case
+        my %param = @args;
+        @param{ map { lc $_ } keys %param } = values %param; # lowercase keys
+        my $format = $param{'-format'} ||
+            $class->_guess_format( $param{-file} || $ARGV[0] ) ||
+                'medlinexml';
+        $format = "\L$format";	# normalize capitalization to lower case
 
-	# load module with the real implementation - as defined in $format
-	return unless (&_load_format_module ($format));
+        # load module with the real implementation - as defined in $format
+        return unless (&_load_format_module ($format));
 
-	# this will call this same method new() - but rather its
-	# upper (object) branche
-	return "Bio::Biblio::IO::$format"->new(@args);
+        # this will call this same method new() - but rather its
+        # upper (object) branche
+        return "Bio::Biblio::IO::$format"->new(@args);
     }
 }
 
 sub newFh {
-  my $class = shift;
-  return unless my $self = $class->new(@_);
-  return $self->fh;
+    my $class = shift;
+    return unless my $self = $class->new(@_);
+    return $self->fh;
 }
 
 
 sub fh {
-  my $self = shift;
-  my $class = ref($self) || $self;
-  my $s = Symbol::gensym;
-  tie $$s,$class,$self;
-  return $s;
+    my $self = shift;
+    my $class = ref($self) || $self;
+    my $s = Symbol::gensym;
+    tie $$s,$class,$self;
+    return $s;
 }
 
 # _initialize is chained for all Bio::Biblio::IO classes
@@ -291,14 +291,14 @@ sub _initialize {
  Function: Reads the next citation object from the stream and returns it.
  Returns : a Bio::Biblio::Ref citation object, or something else
            (depending on the '-result' argument given in the 'new()'
-	    method).
+           method).
  Args    : none
 
 =cut
 
 sub next_bibref {
-   my ($self) = shift;
-   $self->throw ("Sorry, you cannot read from a generic Bio::Biblio::IO object.");
+    my ($self) = shift;
+    $self->throw ("Sorry, you cannot read from a generic Bio::Biblio::IO object.");
 }
 
 # -----------------------------------------------------------------------------
@@ -320,26 +320,26 @@ It throws an exception if it fails to find and load the module
 =cut
 
 sub _load_format_module {
-  my ($format) = @_;
-  my ($module, $load, $m);
+    my ($format) = @_;
+    my ($module, $load, $m);
 
-  $module = "_<Bio/Biblio/IO/$format.pm";
-  $load = "Bio/Biblio/IO/$format.pm";
+    $module = "_<Bio/Biblio/IO/$format.pm";
+    $load = "Bio/Biblio/IO/$format.pm";
 
-  return 1 if $main::{$module};
-  eval {
-    require $load;
-  };
-  if ( $@ ) {
-    Bio::Root::Root->throw (<<END);
+    return 1 if $main::{$module};
+    eval {
+        require $load;
+    };
+    if ( $@ ) {
+        Bio::Root::Root->throw (<<END);
 $load: $format cannot be found or loaded
 Exception $@
 For more information about the Biblio system please see the Bio::Biblio::IO docs.
 END
-  ;
-    return;
-  }
-  return 1;
+        ;
+        return;
+    }
+    return 1;
 }
 
 =head2 _guess_format
@@ -354,10 +354,10 @@ It makes an expert guess what kind of data are in the given file
 =cut
 
 sub _guess_format {
-   my $class = shift;
-   return unless $_ = shift;
-   return 'medlinexml'   if (/\.(xml|medlinexml)$/i);
-   return;
+    my $class = shift;
+    return unless $_ = shift;
+    return 'medlinexml'   if (/\.(xml|medlinexml)$/i);
+    return;
 }
 
 sub DESTROY {
@@ -372,11 +372,11 @@ sub TIEHANDLE {
 }
 
 sub READLINE {
-  my $self = shift;
-  return $self->{'biblio'}->next_bibref() unless wantarray;
-  my (@list, $obj);
-  push @list, $obj while $obj = $self->{'biblio'}->next_bibref();
-  return @list;
+    my $self = shift;
+    return $self->{'biblio'}->next_bibref() unless wantarray;
+    my (@list, $obj);
+    push @list, $obj while $obj = $self->{'biblio'}->next_bibref();
+    return @list;
 }
 
 1;
