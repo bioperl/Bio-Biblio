@@ -1,16 +1,13 @@
-#
-# BioPerl module Bio::DB::Biblio::eutils.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Allen Day <allenday@ucla.edu>
-# For copyright and disclaimer see below.
+package Bio::DB::Biblio::eutils;
+use strict;
+use warnings;
+use LWP::Simple;
+use XML::Twig;
+use URI::Escape;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio Bio::DB::BiblioI);
 
-=head1 NAME
-
-Bio::DB::Biblio::eutils - Access to PubMed's bibliographic query service
+# ABSTRACT: access to PubMed's bibliographic query service
 
 =head1 SYNOPSIS
 
@@ -123,24 +120,10 @@ followed by internal methods.
 
 =cut
 
-# Let the code begin...
-
-
-package Bio::DB::Biblio::eutils;
-use strict;
-use warnings;
-
-use LWP::Simple;
-use XML::Twig;
-use URI::Escape;
-use parent qw(Bio::Biblio Bio::DB::BiblioI);
-
 our $DEFAULT_URN;
 our $EFETCH      = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
 our $ESEARCH     = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
 our $MAX_RECORDS = 100_000;
-
-# -----------------------------------------------------------------------------
 
 =head2 _initialize
 

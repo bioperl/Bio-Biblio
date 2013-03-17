@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::PubmedJournalArticle
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::PubmedJournalArticle;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::PubmedArticle Bio::Biblio::MedlineJournalArticle);
 
-=head1 NAME
-
-Bio::Biblio::PubmedJournalArticle - Representation of a PUBMED journal article
+# ABSTRACT: representation of a PUBMED journal article
 
 =head1 SYNOPSIS
 
@@ -109,17 +103,7 @@ This software is provided "as is" without warranty of any kind.
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::Biblio::PubmedJournalArticle;
-use strict;
-use warnings;
 our @ISA;
-
-use parent qw(Bio::Biblio::PubmedArticle Bio::Biblio::MedlineJournalArticle);
-
 #
 # a closure with a list of allowed attribute names (these names
 # correspond with the allowed 'get' and 'set' methods); each name also

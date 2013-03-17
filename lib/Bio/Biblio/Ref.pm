@@ -1,16 +1,11 @@
-#
-# BioPerl module for Bio::Biblio::Ref
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::Ref;
+use strict;
+use warnings;
+use Bio::Annotation::DBLink;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::BiblioBase);
 
-=head1 NAME
-
-Bio::Biblio::Ref - Representation of a bibliographic reference
+# ABSTRACT: representation of a bibliographic reference
 
 =head1 SYNOPSIS
 
@@ -129,18 +124,7 @@ methods. Internal methods are preceded with a _
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::Biblio::Ref;
-use strict;
-use warnings;
 our $AUTOLOAD;
-
-use Bio::Annotation::DBLink;
-
-use parent qw(Bio::Biblio::BiblioBase);
 
 #
 # a closure with a list of allowed attribute names (these names

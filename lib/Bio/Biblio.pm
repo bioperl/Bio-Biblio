@@ -1,17 +1,9 @@
-#
-# BioPerl module Bio::Biblio
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org>
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
-#
+package Bio::Biblio;
+use strict;
+use warnings;
+use parent qw(Bio::Root::Root Bio::DB::BiblioI);
 
-# POD documentation - main docs before the code
-
-=head1 NAME
-
-Bio::Biblio - A Bibliographic Query Service module
+# ABSTRACT: a bibliographic query service module
 
 =head1 SYNOPSIS
 
@@ -191,17 +183,6 @@ Here is the rest of the object methods.  Internal methods are preceded
 with an underscore _.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio;
-use strict;
-#use warnings;
-use parent qw(Bio::Root::Root Bio::DB::BiblioI);
-
-# -----------------------------------------------------------------------------
 
 =head2 new
 

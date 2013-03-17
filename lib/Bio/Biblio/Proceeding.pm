@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::Proceeding
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::Proceeding;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::Ref);
 
-=head1 NAME
-
-Bio::Biblio::Proceeding - Representation of a conference proceeding
+# ABSTRACT: representation of a conference proceeding
 
 =head1 SYNOPSIS
 
@@ -99,16 +93,6 @@ because a proceeding is actrually a collection of resources. Perhaps
 this will be changed in the future.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::Proceeding;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::Ref);
 
 #
 # a closure with a list of allowed attribute names (these names

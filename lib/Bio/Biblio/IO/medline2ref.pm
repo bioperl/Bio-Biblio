@@ -1,16 +1,16 @@
-#
-# BioPerl module Bio::Biblio::IO::medline2ref.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::IO::medline2ref;
+use strict;
+use warnings;
+use Bio::Annotation::DBLink;
+use Bio::Biblio::MedlineJournal;
+use Bio::Biblio::MedlineBook;
+use Bio::Biblio::Provider;
+use Bio::Biblio::Person;
+use Bio::Biblio::Organisation;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Root::Root);
 
-=head1 NAME
-
-Bio::Biblio::IO::medline2ref - A converter of a raw hash to MEDLINE citations
+# ABSTRACT: a converter of a raw hash to MEDLINE citations
 
 =head1 SYNOPSIS
 
@@ -72,25 +72,6 @@ with an underscore _.
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::Biblio::IO::medline2ref;
-use strict;
-use warnings;
-
-use Bio::Annotation::DBLink;
-
-use Bio::Biblio::MedlineJournal;
-use Bio::Biblio::MedlineBook;
-use Bio::Biblio::Provider;
-use Bio::Biblio::Person;
-use Bio::Biblio::Organisation;
-
-use parent qw(Bio::Root::Root);
-
-# -----------------------------------------------------------------------------
 sub new {
     my ($caller, @args) = @_;
     my $class = ref ($caller) || $caller;

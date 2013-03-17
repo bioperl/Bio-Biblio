@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::Service
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::Service;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::Provider);
 
-=head1 NAME
-
-Bio::Biblio::Service - Representation of a provider of type service
+# ABSTRACT: representation of a provider of type service
 
 =head1 SYNOPSIS
 
@@ -93,16 +87,6 @@ it under the same terms as Perl itself.
 This software is provided "as is" without warranty of any kind.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::Service;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::Provider);
 
 #
 # a closure with a list of allowed attribute names (these names

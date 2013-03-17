@@ -1,16 +1,18 @@
-#
-# BioPerl module Bio::DB::Biblio::soap.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org>
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::DB::Biblio::soap;
+use strict;
+use warnings;
+use SOAP::Lite on_fault => sub {
+    my $soap = shift;
+    my $res = shift;
+    my $msg =
+        ref $res ? "--- SOAP FAULT ---\n" . $res->faultcode . " " . $res->faultstring
+             : "--- TRANSPORT ERROR ---\n" . $soap->transport->status . "\n$res\n";
+        Bio::DB::Biblio::soap->throw ( -text => $msg );
+};
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio);
 
-=head1 NAME
-
-Bio::DB::Biblio::soap - A SOAP-based access to a bibliographic query service
+# ABSTRACT: a SOAP-based access to a bibliographic query service
 
 =head1 SYNOPSIS
 
@@ -103,33 +105,11 @@ with an underscore _.
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::DB::Biblio::soap;
-use strict;
-use warnings;
-use parent qw(Bio::Biblio);
-
-use SOAP::Lite
-    on_fault => sub {
-    my $soap = shift;
-    my $res = shift;
-    my $msg =
-        ref $res ? "--- SOAP FAULT ---\n" . $res->faultcode . " " . $res->faultstring
-             : "--- TRANSPORT ERROR ---\n" . $soap->transport->status . "\n$res\n";
-        Bio::DB::Biblio::soap->throw ( -text => $msg );
-    }
-;
-
 # where to go...
 our $DEFAULT_SERVICE = 'http://www.ebi.ac.uk/openbqs/services/MedlineSRS';
 
 ## TODO: This namespace is no longer valid (check for deprecation or update)
 our $DEFAULT_NAMESPACE = 'http://industry.ebi.ac.uk/openBQS';
-
-# -----------------------------------------------------------------------------
 
 =head2 _initialize
 

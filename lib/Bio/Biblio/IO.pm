@@ -1,16 +1,11 @@
-#
-# BioPerl module for Bio::Biblio::IO
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::IO;
+use strict;
+use warnings;
+use Symbol;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Root::Root Bio::Root::IO);
 
-=head1 NAME
-
-Bio::Biblio::IO - Handling the bibliographic references
+# ABSTRACT: Handling the bibliographic references
 
 =head1 SYNOPSIS
 
@@ -215,17 +210,6 @@ The rest of the documentation details each of the object
 methods. Internal methods are preceded with a _
 
 =cut
-
-
-# Let the code begin...
-
-package Bio::Biblio::IO;
-use strict;
-use warnings;
-
-use Symbol;
-
-use parent qw(Bio::Root::Root Bio::Root::IO);
 
 my $entry = 0;
 

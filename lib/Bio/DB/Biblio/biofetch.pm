@@ -1,17 +1,11 @@
-#
-# BioPerl module Bio::DB::Biblio::biofetch.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org>
-#
-# Cared for by Heikki Lehvaslaiho <heikki-at-bioperl-dot-org>
-# For copyright and disclaimer see below.
+package Bio::DB::Biblio::biofetch;
+use strict;
+use warnings;
+use Bio::Biblio::IO;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::DB::DBFetch Bio::Biblio);
 
-=head1 NAME
-
-Bio::DB::Biblio::biofetch - A BioFetch-based access to a bibliographic
-  citation retrieval
+# ABSTRACT: a BioFetch-based access to a bibliographic citation retrieval
 
 =head1 SYNOPSIS
 
@@ -97,18 +91,6 @@ Here is the rest of the object methods.  Internal methods are preceded
 with an underscore _.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::DB::Biblio::biofetch;
-use strict;
-use warnings;
-
-use Bio::Biblio::IO;
-
-use parent qw(Bio::DB::DBFetch Bio::Biblio);
 
 # you can add your own here theoretically.
 our %HOSTS = (

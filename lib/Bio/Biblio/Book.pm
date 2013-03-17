@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::Book
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::Book;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::Ref);
 
-=head1 NAME
-
-Bio::Biblio::Book - Representation of a book
+# ABSTRACT: Representation of a book
 
 =head1 SYNOPSIS
 
@@ -102,16 +96,6 @@ it under the same terms as Perl itself.
 This software is provided "as is" without warranty of any kind.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::Book;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::Ref);
 
 #
 # a closure with a list of allowed attribute names (these names

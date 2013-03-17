@@ -1,17 +1,10 @@
-#
-# BioPerl module for Bio::DB::BiblioI
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
-#
+package Bio::DB::BiblioI;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Root::RootI);
 
-=head1 NAME
-
-Bio::DB::BiblioI - An interface to a Bibliographic Query Service
+# ABSTRACT: an interface to a Bibliographic Query Service
 
 =head1 SYNOPSIS
 
@@ -86,17 +79,6 @@ Bio::DB::BiblioI object you will get a I<not implemented> error
 message. You need to call them on a Bio::Biblio object.
 
 =cut
-
-
-# Let the code begin...
-
-package Bio::DB::BiblioI;
-use strict;
-use warnings;
-
-use parent qw(Bio::Root::RootI);
-
-# -----------------------------------------------------------------------------
 
 =head2 get_collection_id
 

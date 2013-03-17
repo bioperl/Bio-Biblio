@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::Journal
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::Journal;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::BiblioBase);
 
-=head1 NAME
-
-Bio::Biblio::Journal - Representation of a journal
+# ABSTRACT: representation of a journal
 
 =head1 SYNOPSIS
 
@@ -98,15 +92,6 @@ it under the same terms as Perl itself.
 This software is provided "as is" without warranty of any kind.
 
 =cut
-
-
-# Let the code begin...
-
-package Bio::Biblio::Journal;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::BiblioBase);
 
 #
 # a closure with a list of allowed attribute names (these names

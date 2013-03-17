@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::MedlineBook
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::MedlineBook;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::Book);
 
-=head1 NAME
-
-Bio::Biblio::MedlineBook - Representation of a MEDLINE book
+# ABSTRACT: representation of a MEDLINE book
 
 =head1 SYNOPSIS
 
@@ -96,16 +90,6 @@ it under the same terms as Perl itself.
 This software is provided "as is" without warranty of any kind.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::MedlineBook;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::Book);
 
 #
 # a closure with a list of allowed attribute names (these names

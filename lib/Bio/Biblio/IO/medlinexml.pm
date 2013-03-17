@@ -1,16 +1,11 @@
-#
-# BioPerl module Bio::Biblio::IO::medlinexml.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::IO::medlinexml;
+use strict;
+use warnings;
+use XML::Parser;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::IO);
 
-=head1 NAME
-
-Bio::Biblio::IO::medlinexml - A converter of XML files with MEDLINE citations
+# ABSTRACT:a converter of XML files with MEDLINE citations
 
 =head1 SYNOPSIS
 
@@ -81,18 +76,6 @@ with an underscore _.
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::Biblio::IO::medlinexml;
-use strict;
-use warnings;
-
-use XML::Parser;
-
-use parent qw(Bio::Biblio::IO);
-
 our @Citations;
 our $Callback;
 our $Convert;
@@ -104,8 +87,6 @@ our %POP_DATA_AND_PEEK_OBJ;
 our %POP_OBJ_AND_PEEK_OBJ;
 our %POP_AND_ADD_ELEMENT;
 our %POP_AND_ADD_DATA_ELEMENT;
-
-# -----------------------------------------------------------------------------
 
 sub _initialize {
     my ($self, @args) = @_;

@@ -1,22 +1,7 @@
 #!perl
-#
-#   A client showing how to use Bio::Biblio module, a module for
-#   accessing and querying a bibliographic repository.
-#   It also shows how to use modules Bio::Biblio::IO::medlinexml
-#   Bio::Biblio::IO::medline2ref which converts XML MEDLINE
-#   citations into a simple hash table and into full Perl objects.
-#
-#   It has many options in order to cover as many methods as
-#   possible.  Because of that, it can be also used as a fully
-#   functional command-line client for querying repository and
-#   retrieving citations from it.
-#
-#   Usage: bp_biblio.pl -h
-#
-#   martin.senger@gmail.com
-#   February 2002
-#
-#-----------------------------------------------------------------------------
+
+# ABSTRACT: bioperl client for accessing and querying a bibliographic repository
+# PODNAME:  bp_biblio
 
 use strict;
 use warnings;
@@ -278,12 +263,6 @@ sub print_one {
 
 
 __END__
-
-
-=head1 NAME
-
-bp_biblio.pl - bioperl client for accessing and querying a bibliographic
-repository.
 
 =head1 SYNOPSIS
 

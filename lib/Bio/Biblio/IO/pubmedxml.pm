@@ -1,16 +1,10 @@
-#
-# BioPerl module Bio::Biblio::IO::pubmedxml.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::IO::pubmedxml;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::IO::medlinexml);
 
-=head1 NAME
-
-Bio::Biblio::IO::pubmedxml - A converter of XML files with PUBMED citations
+# ABSTRACT: a converter of XML files with PUBMED citations
 
 =head1 SYNOPSIS
 
@@ -80,16 +74,6 @@ Here is the rest of the object methods.  Internal methods are preceded
 with an underscore _.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::IO::pubmedxml;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::IO::medlinexml);
 
 our %PCDATA_NAMES;
 our %SIMPLE_TREATMENT;

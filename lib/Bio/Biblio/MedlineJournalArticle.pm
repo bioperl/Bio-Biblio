@@ -1,16 +1,10 @@
-#
-# BioPerl module for Bio::Biblio::MedlineJournalArticle
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::MedlineJournalArticle;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::MedlineArticle Bio::Biblio::JournalArticle);
 
-=head1 NAME
-
-Bio::Biblio::MedlineJournalArticle - Representation of a MEDLINE journal article
+# ABSTRACT: representation of a MEDLINE journal article
 
 =head1 SYNOPSIS
 
@@ -100,18 +94,7 @@ This software is provided "as is" without warranty of any kind.
 
 =cut
 
-
-# Let the code begin...
-
-
-package Bio::Biblio::MedlineJournalArticle;
-use strict;
-use warnings;
 our @ISA;
-
-
-use parent qw(Bio::Biblio::MedlineArticle Bio::Biblio::JournalArticle);
-
 #
 # a closure with a list of allowed attribute names (these names
 # correspond with the allowed 'get' and 'set' methods); each name also

@@ -1,16 +1,10 @@
-#
-# BioPerl module Bio::Biblio::IO::pubmed2ref.pm
-#
-# Please direct questions and support issues to <bioperl-l@bioperl.org> 
-#
-# Cared for by Martin Senger <senger@ebi.ac.uk>
-# For copyright and disclaimer see below.
+package Bio::Biblio::IO::pubmed2ref;
+use strict;
+use warnings;
 
-# POD documentation - main docs before the code
+use parent qw(Bio::Biblio::IO::medline2ref);
 
-=head1 NAME
-
-Bio::Biblio::IO::pubmed2ref - A converter of a raw hash to PUBMED citations
+# ABSTRACT: a converter of a raw hash to PUBMED citations
 
 =head1 SYNOPSIS
 
@@ -71,17 +65,6 @@ Here is the rest of the object methods.  Internal methods are preceded
 with an underscore _.
 
 =cut
-
-
-# Let the code begin...
-
-
-package Bio::Biblio::IO::pubmed2ref;
-use strict;
-use warnings;
-
-use parent qw(Bio::Biblio::IO::medline2ref);
-
 
 # ---------------------------------------------------------------------
 #
