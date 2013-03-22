@@ -18,9 +18,9 @@ is ($ref->identifier, "10592273");
 @ids = qw(10592273 9613206);
 $ref = $db->get_all(\@ids);
 ok (defined ($ref));
-is ($ref->next_bibref->identifier, $_) for (reverse @ids);
+is ($ref->next_bibref->identifier, $_) for (@ids);
 
 @ids = qw(10592273 9613206);
 $ref = $db->get_Stream_by_id(\@ids);
 ok (defined ($ref));
-is ($ref->next_bibref->identifier, $_) for (reverse @ids);
+is ($ref->next_bibref->identifier, $_) for (@ids);
