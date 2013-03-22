@@ -441,25 +441,6 @@ remote HTTP targets via a proxy server.  For example:
   export HTTPPROXY=http://128.243.220.41:3128
   bp_biblio.pl -c
 
-=head1 FEEDBACK
-
-=head2 Mailing Lists
-
-User feedback is an integral part of the evolution of this and other
-Bioperl modules. Send your comments and suggestions preferably to
-the Bioperl mailing list.  Your participation is much appreciated.
-
-  bioperl-l@bioperl.org                  - General discussion
-  http://bioperl.org/wiki/Mailing_lists  - About the mailing lists
-
-=head2 Reporting Bugs
-
-Report bugs to the Bioperl bug trackingi system to help us keep track
-of the bugs and their resolution. Bug reports can be submitted via the
-web:
-
-  https://redmine.open-bio.org/projects/bioperl/
-
 =head1 AUTHOR - Martin Senger
 
 Email martin.senger@gmail.com

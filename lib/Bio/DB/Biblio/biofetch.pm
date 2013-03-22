@@ -27,36 +27,6 @@ I<Bio::Biblio> module:
 This class uses BioFetch protocol based service to retrieve Medline
 references by their ID.
 
-=head1 FEEDBACK
-
-=head2 Mailing Lists
-
-User feedback is an integral part of the evolution of this and other
-Bioperl modules. Send your comments and suggestions preferably to
-the Bioperl mailing list.  Your participation is much appreciated.
-
-  bioperl-l@bioperl.org                  - General discussion
-  http://bioperl.org/wiki/Mailing_lists  - About the mailing lists
-
-=head2 Support
-
-Please direct usage questions or support issues to the mailing list:
-
-I<bioperl-l@bioperl.org>
-
-rather than to the module maintainer directly. Many experienced and
-reponsive experts will be able look at the problem and quickly
-address it. Please include a thorough description of the problem
-with code and data examples if at all possible.
-
-=head2 Reporting Bugs
-
-Report bugs to the Bioperl bug tracking system to help us keep track
-of the bugs and their resolution. Bug reports can be submitted via the
-web:
-
-  https://redmine.open-bio.org/projects/bioperl/
-
 =head1 AUTHOR
 
 Heikki Lehvaslaiho (heikki-at-bioperl-dot-org)

@@ -18,7 +18,8 @@ use vars qw($NUMTESTS);
 
 my $error;
 
-BEGIN { 
+
+BEGIN {
     # to handle systems with no installed Test module
     # we include the t dir (where a copy of Test.pm is located)
     # as a fallback
@@ -46,7 +47,7 @@ if ($pid = fork) {
     sleep 1;
     my $biblio = new Bio::Biblio (-location => "tcp://localhost:$port",
                                   -namespace => 'soap_server');
-    
+
     ok ($biblio->get_count, '43');
     ok ($biblio->get_by_id ('X'), 'X');
     ok ($biblio->find ('a,b','c,d')->get_collection_id, 'a,b,c,d');
@@ -111,6 +112,6 @@ if ($pid = fork) {
     package main;
 
 } else {
-        # fork failed
-        print STDERR "Testing SOAP services FAILED: $!.\n";
-    }
+    # fork failed
+    print STDERR "Testing SOAP services FAILED: $!.\n";
+}
