@@ -25,7 +25,7 @@ BEGIN {
     eval { require Test; };
     $error = 0;
     if( $@ ) {
-	use lib 't';
+        use lib 't';
     }
     use Test;
     plan tests => 10;
@@ -45,7 +45,7 @@ if ($pid = fork) {
 
     sleep 1;
     my $biblio = new Bio::Biblio (-location => "tcp://localhost:$port",
-				  -namespace => 'soap_server');
+                                  -namespace => 'soap_server');
     
     ok ($biblio->get_count, '43');
     ok ($biblio->get_by_id ('X'), 'X');
@@ -77,13 +77,13 @@ if ($pid = fork) {
     use SOAP::Transport::TCP;
     my $daemon;
     while ($port < $max_port) {
-	eval {
-	    $daemon = SOAP::Transport::TCP::Server
-		-> new (LocalAddr => 'localhost', LocalPort => $port, Listen => 5, Reuse => 1)
-		    -> dispatch_to('soap_server');
-	};
-	last unless $@;
-	$port++;
+        eval {
+            $daemon = SOAP::Transport::TCP::Server
+                -> new (LocalAddr => 'localhost', LocalPort => $port, Listen => 5, Reuse => 1)
+                    -> dispatch_to('soap_server');
+        };
+        last unless $@;
+        $port++;
     }
     print "    Contact to SOAP server at ", join(':', $daemon->sockhost, $daemon->sockport), " (server PID: $$)\n";
     $daemon->handle;
@@ -91,19 +91,19 @@ if ($pid = fork) {
     sub getBibRefCount { shift;  return 43; }
     sub getById { shift; return shift; }
     sub find {
-	my ($self, $keywords, $attrs) = @_;
-	return join (',', (@{ $keywords }, @{ $attrs })) if $attrs;
-	return join (',', @{ $keywords });
+        my ($self, $keywords, $attrs) = @_;
+        return join (',', (@{ $keywords }, @{ $attrs })) if $attrs;
+        return join (',', @{ $keywords });
     }
     sub getAllIDs { shift; return [ shift ] }
     sub getAllBibRefs { shift; return [ shift ] }
     sub hasNext { return SOAP::Data->type (boolean => 'true'); }
     sub getNext { shift; return [ '1', shift]; }
     sub getMore {
-	my ($self, $id, $how_many) = @_;
-	my @result = ('1');
-	push (@result, $id) for (1..$how_many);
-	return \@result;
+        my ($self, $id, $how_many) = @_;
+        my @result = ('1');
+        push (@result, $id) for (1..$how_many);
+        return \@result;
     }
     sub exists { return SOAP::Data->type (boolean => '0'); }
     sub destroy {}

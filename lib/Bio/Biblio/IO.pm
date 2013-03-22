@@ -235,7 +235,7 @@ sub new {
         my $format = $param{'-format'} ||
             $class->_guess_format( $param{-file} || $ARGV[0] ) ||
                 'medlinexml';
-        $format = "\L$format";	# normalize capitalization to lower case
+        $format = "\L$format";  # normalize capitalization to lower case
 
         # load module with the real implementation - as defined in $format
         return unless (&_load_format_module ($format));

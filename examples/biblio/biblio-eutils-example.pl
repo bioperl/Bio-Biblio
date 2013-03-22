@@ -48,19 +48,19 @@ my $pmids = $result->get_all_ids;
 my $parser = XML::Twig->new(twig_roots => {"ArticleTitle" => \&print_title} );
 
 for my $pmid (@$pmids) {
-	my $xml = $biblio->get_by_id($pmid);
-	eval {
-		$parser->parse($xml);
-	};
-	if ($@) {
-		warn "Problem parsing PubMed $pmid XML: $!\n";
-	}
+    my $xml = $biblio->get_by_id($pmid);
+    eval {
+        $parser->parse($xml);
+    };
+    if ($@) {
+        warn "Problem parsing PubMed $pmid XML: $!\n";
+    }
 }
 
 sub print_title {
-	my ($twig, $elt) = @_;
-	print $elt->text,"\n";
-	$twig->purge;
+    my ($twig, $elt) = @_;
+    print $elt->text,"\n";
+    $twig->purge;
 }
 
 =head1 PubMed XML Example
