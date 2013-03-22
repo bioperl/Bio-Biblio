@@ -40,17 +40,9 @@ it under the same terms as Perl itself.
 
 This software is provided "as is" without warranty of any kind.
 
-=head1 APPENDIX
-
-This is actually the main documentation...
-
-If you try to call any of these methods directly on this
-Bio::DB::BiblioI object you will get a I<not implemented> error
-message. You need to call them on a Bio::Biblio object.
-
 =cut
 
-=head2 get_collection_id
+=method get_collection_id
 
  Usage   : my $collection_id = $biblio->get_collection_id;
  Returns : string identifying a query collection
@@ -71,7 +63,7 @@ sub get_collection_id {
 
 # -----------------------------------------------------------------------------
 
-=head2 get_count
+=method get_count
 
  Usage   : my $count = $biblio->get_count;
  Returns : integer
@@ -87,7 +79,7 @@ sub get_count { shift->throw_not_implemented(); }
 
 # -----------------------------------------------------------------------------
 
-=head2 find
+=method find
 
  Usage   : my $new_biblio = $biblio->find ($keywords, $attrs);
            my $new_biblio = $biblio->find ('perl', 'abstract');
@@ -122,7 +114,7 @@ sub find { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 reset_retrieval
+=method reset_retrieval
 
  Usage   : $biblio->reset_retrieval;
  Returns : nothing
@@ -145,7 +137,7 @@ sub reset_retrieval { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_next
+=method get_next
 
  Usage   : my $citation = $biblio->get_next;
  Returns : a citation in an XML format
@@ -170,7 +162,7 @@ sub get_next { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_more
+=method get_more
 
  Usage   : my $r_citations = $biblio->get_more (5);
  Returns : an array reference - each element has a citation
@@ -194,7 +186,7 @@ sub get_more { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 has_next
+=attr has_next
 
  Usage   : my $is = $biblio->has_next;
  Returns : 1 or undef
@@ -213,7 +205,7 @@ sub has_next { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_all_ids
+=method get_all_ids
 
  Usage   : my $r_ids = $biblio->get_all_ids;
  Returns : an array reference - each element has
@@ -239,7 +231,7 @@ sub get_all_ids { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_by_id
+=method get_by_id
 
  Usage   : my $citation = $biblio->get_by_id ('12368254');
  Returns : a citation in an XML format
@@ -255,7 +247,7 @@ sub get_by_id { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_all
+=method get_all
 
  Usage   : my $all = $biblio->get_all;
  Returns : a (big) string with all citations in an XML format
@@ -280,7 +272,7 @@ sub get_all { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 exists
+=attr exists
 
  Usage   : my $exists = $biblio->exists;
  Returns : 1 or undef
@@ -307,7 +299,7 @@ sub exists { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 destroy
+=method destroy
 
  Usage   : $biblio->destroy;
  Returns : nothing
@@ -326,7 +318,7 @@ sub destroy { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_vocabulary_names
+=method get_vocabulary_names
 
  Usage   : print join ("\n", @{ $biblio->get_vocabulary_names });
  Returns : an array reference - each element has a name
@@ -350,7 +342,7 @@ sub get_vocabulary_names { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 contains
+=attr contains
 
  Usage   : my $yes = $biblio->contains ($vocabulary_name, $value);
  Returns : 1 or undef
@@ -372,7 +364,7 @@ sub contains { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_entry_description
+=method get_entry_description
 
  Usage   : $biblio->get_entry_description ($voc_name, $value);
  Returns : a string with a desciption
@@ -395,7 +387,7 @@ sub get_entry_description { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_all_values
+=method get_all_values
 
  Usage   : $biblio->get_all_values ($vocabulary_name);
  Returns : an array reference - each element has a value (scalar)
@@ -412,7 +404,7 @@ sub get_all_values { shift->throw_not_implemented; }
 
 # -----------------------------------------------------------------------------
 
-=head2 get_all_entries
+=method get_all_entries
 
  Usage   : $biblio->get_all_entries ($vocabulary_name);
  Returns : a hash reference - keys are vocabulary values
@@ -434,15 +426,4 @@ This is one way how to get it and print it:
 
 sub get_all_entries { shift->throw_not_implemented; }
 
-# -----------------------------------------------------------------------------
-
-=head2 VERSION and Revision
-
- Usage   : print $Bio::DB::BiblioI::VERSION;
-           print $Bio::DB::BiblioI::Revision;
-
-=cut
-
 1;
-__END__
-

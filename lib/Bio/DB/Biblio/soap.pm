@@ -29,6 +29,9 @@ Service as defined in L<Bio::DB::BiblioI> - using a SOAP protocol
 to access a WebService (a remote server) that represents a
 bibliographic repository.
 
+The main documentation details are to be found in
+L<Bio::DB::BiblioI>.
+
 =head1 AUTHOR
 
 Martin Senger (martin.senger@gmail.com)
@@ -65,23 +68,22 @@ are properly transferred even if they contain foreign characters.
 
 =back
 
-=head1 APPENDIX
+=cut
 
-The main documentation details are to be found in
-L<Bio::DB::BiblioI>.
 
-Here is the rest of the object methods.  Internal methods are preceded
-with an underscore _.
+=attr Defaults
+
+ Usage   : print $Bio::DB::Biblio::soap::DEFAULT_SERVICE;
+           print $Bio::DB::Biblio::soap::DEFAULT_NAMESPACE;
 
 =cut
 
-# where to go...
+## where to go...
 our $DEFAULT_SERVICE = 'http://www.ebi.ac.uk/openbqs/services/MedlineSRS';
-
 ## TODO: This namespace is no longer valid (check for deprecation or update)
 our $DEFAULT_NAMESPACE = 'http://industry.ebi.ac.uk/openBQS';
 
-=head2 _initialize
+=internal _initialize
 
  Usage   : my $obj = Bio::Biblio->new(-access => 'soap' ...);
            (_initialize is internally called from this constructor)
@@ -487,19 +489,4 @@ sub get_all_entries {
     $soap->getAllEntries (SOAP::Data->type (string => $vocabulary_name))->result;
 }
 
-=head2 VERSION and Revision
-
- Usage   : print $Bio::DB::Biblio::soap::VERSION;
-           print $Bio::DB::Biblio::soap::Revision;
-
-=cut
-
-=head2 Defaults
-
- Usage   : print $Bio::DB::Biblio::soap::DEFAULT_SERVICE;
-           print $Bio::DB::Biblio::soap::DEFAULT_NAMESPACE;
-
-=cut
-
 1;
-__END__

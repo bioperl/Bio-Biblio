@@ -24,6 +24,9 @@ it through the I<Bio::Biblio> module:
                                  -format => 'medlinexml' );
   my $article = $io->next_bibref();
 
+The main documentation details are to be found in
+L<Bio::DB::BiblioI>.
+
 =head1 AUTHOR
 
 Allen Day E<lt>allenday@ucla.eduE<gt>
@@ -71,14 +74,6 @@ L<Bio::Biblio::Ref> and L<Bio::DB::MeSH>.
  Example code:
  examples/biblio/biblio-eutils-example.pl
 
-=head1 APPENDIX
-
-The main documentation details are to be found in
-L<Bio::DB::BiblioI>.
-
-Here is the rest of the object methods.  Interface methods first,
-followed by internal methods.
-
 =cut
 
 our $DEFAULT_URN;
@@ -86,7 +81,7 @@ our $EFETCH      = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi';
 our $ESEARCH     = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi';
 our $MAX_RECORDS = 100_000;
 
-=head2 _initialize
+=internal _initialize
 
  Usage   : my $obj = Bio::Biblio->new(-access => 'eutils' ...);
            (_initialize is internally called from this constructor)
@@ -133,7 +128,7 @@ sub _initialize {
     return 1;
 }
 
-=head2 db
+=attr db
 
  Title   : db
  Usage   : $obj->db($newval)
@@ -169,9 +164,7 @@ sub db{
 }
 
 
-=head1 Methods implementing Bio::DB::BiblioI interface
-
-=head2 get_collection_id
+=method get_collection_id
 
   Title   : get_collection_id
   Usage   : $id = $biblio->get_collection_id();
@@ -199,7 +192,7 @@ sub get_by_id {
     return $xml;
 }
 
-=head2 reset_retrieval
+=method reset_retrieval
 
   Title   : reset_retrieval
   Usage   : $biblio->reset_retrieval();
@@ -215,7 +208,7 @@ sub reset_retrieval {
     return 1;
 }
 
-=head2 get_next
+=method get_next
 
   Title   : get_next
   Usage   : $xml = $biblio->get_next();
@@ -237,7 +230,7 @@ sub get_next {
     return $xml;
 }
 
-=head2 get_more
+=method get_more
 
   Title   : get_more
   Usage   : $xml = $biblio->get_more($more);
@@ -262,7 +255,7 @@ sub get_more {
     return \@return;
 }
 
-=head2 has_next
+=attr has_next
 
   Title   : has_next
   Usage   : $has_next = $biblio->has_next();
@@ -280,7 +273,7 @@ sub has_next {
 
 
 
-=head2 find
+=method find
 
   Title   : find
   Usage   : $biblio = $biblio->find($pubmed_query_phrase);
@@ -339,7 +332,7 @@ sub find {
 }
 
 
-=head2 get_all_ids
+=method get_all_ids
 
   Title   : get_all_ids
   Usage   : @ids = $biblio->get_all_ids();
@@ -356,7 +349,7 @@ sub get_all_ids {
     return ();
 }
 
-=head2 get_all
+=method get_all
 
   Title   : get_all
   Usage   : $xml = $biblio->get_all();
@@ -380,7 +373,7 @@ sub get_all {
     return $xml;
 }
 
-=head2 exists
+=internal exists
 
   Title   : exists
   Usage   : do not use
@@ -395,7 +388,7 @@ sub exists {
     return;
 }
 
-=head2 destroy
+=internal destroy
 
   Title   : destroy
   Usage   : do not use
@@ -410,7 +403,7 @@ sub destroy {
     return;
 }
 
-=head2 get_vocabulary_names
+=method get_vocabulary_names
 
   Title   : get_vocabulary_names
   Usage   : do not use
@@ -425,7 +418,7 @@ sub get_vocabulary_names {
     return [];
 }
 
-=head2 contains
+=internal contains
 
   Title   : contains
   Usage   : do not use
@@ -440,7 +433,7 @@ sub contains {
     return;
 }
 
-=head2 get_entry_description
+=method get_entry_description
 
   Title   : get_entry_description
   Usage   : do not use
@@ -455,7 +448,7 @@ sub get_entry_description {
     return;
 }
 
-=head2 get_all_values
+=method get_all_values
 
   Title   : get_all_values
   Usage   : do not use
@@ -470,7 +463,7 @@ sub get_all_values {
     return;
 }
 
-=head2 get_all_entries
+=method get_all_entries
 
   Title   : get_all_entries
   Usage   : do not use
@@ -485,9 +478,7 @@ sub get_all_entries {
     return;
 }
 
-=head1 Internal methods unrelated to Bio::DB::BiblioI
-
-=head2 cursor
+=internal cursor
 
   Title   : cursor
   Usage   : $obj->cursor($newval)
@@ -506,7 +497,7 @@ sub cursor {
     return $self->{'cursor'};
 }
 
-=head2 twig
+=internal twig
 
   Title   : twig
   Usage   : $obj->twig($newval)
@@ -524,7 +515,7 @@ sub twig {
     return $self->{'twig'};
 }
 
-=head2 ids
+=internal ids
 
   Title   : ids
   Usage   : $obj->ids($newval)
@@ -542,7 +533,7 @@ sub ids {
     return $self->{'ids'};
 }
 
-=head2 collection_id
+=internal collection_id
 
   Title   : collection_id
   Usage   : $obj->collection_id($newval)
@@ -560,7 +551,7 @@ sub collection_id {
     return $self->{'collection_id'};
 }
 
-=head2 count
+=internal count
 
   Title   : count
   Usage   : $obj->count($newval)
@@ -578,7 +569,7 @@ sub count {
     return $self->{'count'};
 }
 
-=head2 query_key
+=internal query_key
 
   Title   : query_key
   Usage   : $obj->query_key($newval)
@@ -595,6 +586,5 @@ sub query_key {
     return $self->{'query_key'} = shift if @_;
     return $self->{'query_key'};
 }
-
 
 1;

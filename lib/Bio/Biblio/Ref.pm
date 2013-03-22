@@ -87,11 +87,6 @@ it under the same terms as Perl itself.
 
 This software is provided "as is" without warranty of any kind.
 
-=head1 APPENDIX
-
-The rest of the documentation details each of the object
-methods. Internal methods are preceded with a _
-
 =cut
 
 our $AUTOLOAD;
@@ -150,7 +145,7 @@ our $AUTOLOAD;
 }
 
 
-=head2 add_cross_reference
+=method add_cross_reference
 
  Usage   : $self->add_cross_reference
                (Bio::Annotation::DBLink->new(-database   => 'EMBL',
@@ -172,7 +167,7 @@ sub add_cross_reference {
 }
 
 
-=head2 add_author
+=method add_author
 
  Usage   : $self->add_author (Bio::Biblio::Person->new(-lastname => 'Novak');
  Function: adding an author to a list of authors
@@ -192,7 +187,7 @@ sub add_author {
     return $self->authors;
 }
 
-=head2 add_contributor
+=method add_contributor
 
  Usage   : $self->add_contributor (Bio::Biblio::Person->new(-lastname => 'Novak');
  Function: adding a contributor to a list of contributors
@@ -211,6 +206,4 @@ sub add_contributor {
     return $self->contributors;
 }
 
-
 1;
-__END__

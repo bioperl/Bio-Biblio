@@ -173,11 +173,6 @@ it under the same terms as Perl itself.
 
 This software is provided "as is" without warranty of any kind.
 
-=head1 APPENDIX
-
-The rest of the documentation details each of the object
-methods. Internal methods are preceded with a _
-
 =cut
 
 my $entry = 0;
@@ -238,7 +233,7 @@ sub _initialize {
     $self->_initialize_io (@args);
 }
 
-=head2 next_bibref
+=method next_bibref
 
  Usage   : $citation = stream->next_bibref
  Function: Reads the next citation object from the stream and returns it.
@@ -256,7 +251,7 @@ sub next_bibref {
 
 # -----------------------------------------------------------------------------
 
-=head2 _load_format_module
+=internal _load_format_module
 
  Usage   : $class->_load_format_module ($format)
  Returns : 1 on success, undef on failure
@@ -295,7 +290,7 @@ END
     return 1;
 }
 
-=head2 _guess_format
+=internal _guess_format
 
  Usage   : $class->_guess_format ($filename)
  Returns : string with a guessed format of the input data (e.g. 'medlinexml')

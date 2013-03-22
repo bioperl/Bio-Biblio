@@ -88,4 +88,3 @@ our $AUTOLOAD;
 }
 
 1;
-__END__

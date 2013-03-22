@@ -57,6 +57,8 @@ Here are some one-liners:
   perl -MBio::Biblio \
        -e 'print Bio::Biblio->new->find ("Java")->find ("perl")->get_count'
 
+The main documentation details are to be found in
+L<Bio::DB::BiblioI>.
 
 =head1 OVERVIEW OF CLASSES AND PACKAGES
 
@@ -144,17 +146,9 @@ Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.ht
 
 =back
 
-=head1 APPENDIX
-
-The main documentation details are to be found in
-L<Bio::DB::BiblioI>.
-
-Here is the rest of the object methods.  Internal methods are preceded
-with an underscore _.
-
 =cut
 
-=head2 new
+=method new
 
  Usage   : my $obj = Bio::Biblio->new(@args);
  Returns : Bio::Biblio object on success, or undef on failure
@@ -250,7 +244,7 @@ sub new {
 
 # -----------------------------------------------------------------------------
 
-=head2 _load_access_module
+=internal _load_access_module
 
  Usage   : $class->_load_access_module ($access)
  Returns : 1 on success, undef on failure
@@ -292,7 +286,7 @@ END
 
 # -----------------------------------------------------------------------------
 
-=head2 _guess_access
+=internal _guess_access
 
  Usage   : $class->_guess_access ($location)
  Returns : string with a guessed access protocol (e.g. 'soap')
@@ -316,12 +310,4 @@ sub _guess_access {
     return 'soap';
 }
 
-=head2 VERSION and Revision
-
- Usage   : print $Bio::Biblio::VERSION;
-           print $Bio::Biblio::Revision;
-
-=cut
-
 1;
-__END__

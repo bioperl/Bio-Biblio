@@ -35,11 +35,6 @@ it under the same terms as Perl itself.
 
 This software is provided "as is" without warranty of any kind.
 
-=head1 APPENDIX
-
-Here is the rest of the object methods.  Internal methods are preceded
-with an underscore _.
-
 =cut
 
 sub new {
@@ -494,4 +489,3 @@ sub _convert_providers {
 }
 
 1;
-__END__

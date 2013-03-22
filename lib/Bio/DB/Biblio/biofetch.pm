@@ -27,6 +27,9 @@ I<Bio::Biblio> module:
 This class uses BioFetch protocol based service to retrieve Medline
 references by their ID.
 
+The main documentation details are to be found in
+L<Bio::DB::BiblioI>.
+
 =head1 AUTHOR
 
 Heikki Lehvaslaiho (heikki-at-bioperl-dot-org)
@@ -52,14 +55,6 @@ Only method get_by_id() is supported.
 
 =back
 
-=head1 APPENDIX
-
-The main documentation details are to be found in
-L<Bio::DB::BiblioI>.
-
-Here is the rest of the object methods.  Internal methods are preceded
-with an underscore _.
-
 =cut
 
 # you can add your own here theoretically.
@@ -72,6 +67,12 @@ our %HOSTS = (
                             }
               );
 our %FORMATMAP = ( 'default' => 'medlinexml' );
+
+=attr Defaults
+
+ Usage   : print $Bio::DB::Biblio::biofetch::DEFAULT_SERVICE;
+
+=cut
 
 our $DEFAULT_SERVICE = 'http://www.ebi.ac.uk/Tools/dbfetch/dbfetch';
 our $DEFAULTRETRIEVAL_TYPE = 'tempfile';
@@ -92,7 +93,7 @@ sub new {
     return $self;
 }
 
-=head2 get_by_id
+=method get_by_id
 
  Title   : get_by_id
  Usage   : $entry = $db->get__by_id('20063307')
@@ -110,7 +111,7 @@ sub get_by_id {
 }
 
 
-=head2 get_all
+=method get_all
 
   Title   : get_all
   Usage   : $seq = $db->get_all($ref);
@@ -129,7 +130,7 @@ sub get_all {
     return $self->get_seq_stream('-uids' => $ids, '-mode' => 'single');
 }
 
-=head2 get_seq_stream
+=method get_seq_stream
 
  Title   : get_seq_stream
  Usage   : my $seqio = $self->get_seq_stream(%qualifiers)
@@ -194,7 +195,7 @@ sub get_seq_stream {
 }
 
 
-=head2 postprocess_data
+=method postprocess_data
 
  Title   : postprocess_data
  Usage   : $self->postprocess_data ( 'type' => 'string',
@@ -235,18 +236,4 @@ sub postprocess_data {
         $self->debug("format is ". $self->request_format(). " data is $data\n");
 }
 
-=head2 VERSION and Revision
-
- Usage   : print $Bio::DB::Biblio::biofetch::VERSION;
-           print $Bio::DB::Biblio::biofetch::Revision;
-
-=cut
-
-=head2 Defaults
-
- Usage   : print $Bio::DB::Biblio::biofetch::DEFAULT_SERVICE;
-
-=cut
-
 1;
-__END__

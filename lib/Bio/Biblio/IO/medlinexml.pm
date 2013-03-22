@@ -21,6 +21,9 @@ This object reads bibliographic citations in XML/MEDLINE format and
 converts them into I<Bio::Biblio::RefI> objects. It is an
 implementation of methods defined in I<Bio::Biblio::IO>.
 
+The main documentation details are to be found in
+L<Bio::Biblio::IO>.
+
 =head1 AUTHOR
 
 Martin Senger (senger@ebi.ac.uk)
@@ -35,14 +38,6 @@ it under the same terms as Perl itself.
 =head1 DISCLAIMER
 
 This software is provided "as is" without warranty of any kind.
-
-=head1 APPENDIX
-
-The main documentation details are to be found in
-L<Bio::Biblio::IO>.
-
-Here is the rest of the object methods.  Internal methods are preceded
-with an underscore _.
 
 =cut
 
@@ -409,17 +404,6 @@ sub handle_char {
     $PCDataStack [$#PCDataStack] .= $str;
 }
 
-
-
-
-=head2 VERSION and Revision
-
- Usage   : print $Bio::Biblio::IO::medlinexml::VERSION;
-           print $Bio::Biblio::IO::medlinexml::Revision;
-
-=cut
-
-
 sub handle_start {
     my ($expat, $e, %attrs) = @_;
 #    &_debug_object_stack ("START", $e);
@@ -702,4 +686,3 @@ sub _debug_object_stack {
 }
 
 1;
-__END__
