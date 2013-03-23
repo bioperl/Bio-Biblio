@@ -1,4 +1,5 @@
 package Bio::Biblio::IO::pubmed2ref;
+use utf8;
 use strict;
 use warnings;
 

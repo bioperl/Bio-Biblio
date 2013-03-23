@@ -1,4 +1,5 @@
 ## test script for Bio::DB::Biblio::eutils
+use utf8;
 use strict;
 use warnings;
 use Test::More tests => 3;

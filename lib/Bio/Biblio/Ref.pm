@@ -1,4 +1,5 @@
 package Bio::Biblio::Ref;
+use utf8;
 use strict;
 use warnings;
 use Bio::Annotation::DBLink;

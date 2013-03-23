@@ -1,4 +1,5 @@
 ## test script for Bio::Biblio and Bio::Biblio::IO
+use utf8;
 use strict;
 use warnings;
 use File::Spec;

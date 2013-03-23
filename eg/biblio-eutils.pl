@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use utf8;
 
 =encoding utf-8
 

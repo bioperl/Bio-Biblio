@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+use utf8;
+
 =head1 NAME
 
 biblio-soap-example.pl

@@ -1,4 +1,5 @@
 ## test script for Bio::Biblio::*
+use utf8;
 use strict;
 use warnings;
 use Bio::Annotation::DBLink;

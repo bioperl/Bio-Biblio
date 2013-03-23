@@ -1,4 +1,5 @@
 package Bio::Biblio;
+use utf8;
 use strict;
 use warnings;
 use parent qw(Bio::Root::Root Bio::DB::BiblioI);

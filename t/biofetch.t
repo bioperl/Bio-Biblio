@@ -1,4 +1,5 @@
 ## test script for Bio::DB::Biblio::biofetch
+use utf8;
 use strict;
 use warnings;
 use Test::More tests => 10;

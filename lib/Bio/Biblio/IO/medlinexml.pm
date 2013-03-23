@@ -1,4 +1,5 @@
 package Bio::Biblio::IO::medlinexml;
+use utf8;
 use strict;
 use warnings;
 use XML::Parser;

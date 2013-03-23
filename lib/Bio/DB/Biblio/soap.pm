@@ -1,4 +1,5 @@
 package Bio::DB::Biblio::soap;
+use utf8;
 use strict;
 use warnings;
 use SOAP::Lite on_fault => sub {

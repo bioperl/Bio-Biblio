@@ -1,4 +1,5 @@
 #!perl
+use utf8;
 
 # ABSTRACT: bioperl client for accessing and querying a bibliographic repository
 # PODNAME:  bp_biblio

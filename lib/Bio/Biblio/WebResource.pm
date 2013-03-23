@@ -1,4 +1,5 @@
 package Bio::Biblio::WebResource;
+use utf8;
 use strict;
 use warnings;
 
