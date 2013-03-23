@@ -38,25 +38,16 @@ L<Bio::DB::BiblioI>.
 
 =head1 BUGS AND LIMITATIONS
 
-=over
-
-=item *
-
+=for :list
+*
 Methods returning a boolean value (I<has_next>, I<exists> and
 I<contains>) can be used only with SOAP::Lite version 0.52 and newer
 (probably due to a bug in the older SOAP::Lite).
-
-=item *
-
+*
 It does not use WSDL.
-
-=item *
-
+*
 More testing and debugging needed to ensure that returned citations
 are properly transferred even if they contain foreign characters.
-
-=back
-
 =cut
 
 

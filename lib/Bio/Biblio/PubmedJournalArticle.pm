@@ -48,18 +48,11 @@ There are no specific attributes in this class
 
 =head1 SEE ALSO
 
-=over 4
-
-=item *
-
-OpenBQS home page: http://www.ebi.ac.uk/~senger/openbqs/
-
-=item *
-
-Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
-
-=back
-
+=for :list
+* OpenBQS home page
+http://www.ebi.ac.uk/~senger/openbqs/
+* Comments to the Perl client
+http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
 =cut
 
 our @ISA;

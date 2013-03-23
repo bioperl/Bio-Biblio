@@ -33,36 +33,26 @@ L<Bio::DB::BiblioI>.
 
 =head1 BUGS AND LIMITATIONS
 
-=over
-
-=item *
-
+=for :list
+*
 More testing and debugging needed to ensure that returned citations
 are properly transferred even if they contain foreign characters.
-
-=item *
-
+*
 Maximum record count (MAX_RECORDS) returned currently hard coded to
 100K.
-
-=item *
-
+*
 Biblio retrieval methods should be more tightly integrated with
 L<Bio::Biblio::Ref> and L<Bio::DB::MeSH>.
 
-=back
-
 =head1 SEE ALSO
 
- Pub Med Help:
- http://eutils.ncbi.nlm.nih.gov/entrez/query/static/help/pmhelp.html
-
- Entrez Utilities:
- http://eutils.ncbi.nlm.nih.gov/entrez/query/static/eutils_help.html
-
- Example code:
- examples/biblio/biblio-eutils-example.pl
-
+=for :list
+* Pub Med Help
+http://eutils.ncbi.nlm.nih.gov/entrez/query/static/help/pmhelp.html
+* Entrez Utilities
+http://eutils.ncbi.nlm.nih.gov/entrez/query/static/eutils_help.html
+* Example code
+F<eg/biblio-eutils.pl>
 =cut
 
 our $DEFAULT_URN;

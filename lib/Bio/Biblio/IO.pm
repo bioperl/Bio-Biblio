@@ -143,25 +143,15 @@ the directory C<Bio::Biblio>.
 
 =head1 SEE ALSO
 
-=over 4
-
-=item *
-
-An example script I<examples/biblio.pl>. It has many options and its
-own help.  The relevant options to this IO module are I<-f>
-(specifying what file to read) and I<-O> (specifying what result
+=for :list
+* An example script F<eg/biblio-soap.pl>
+It has many options and its own help.  The relevant options to this IO module
+are C<-f> (specifying what file to read) and C<-O> (specifying what result
 format to achieve).
-
-=item *
-
-OpenBQS home page: http://www.ebi.ac.uk/~senger/openbqs
-
-=item *
-
-Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
-
-=back
-
+* OpenBQS home page
+http://www.ebi.ac.uk/~senger/openbqs/
+* Comments to the Perl client
+http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
 =cut
 
 my $entry = 0;

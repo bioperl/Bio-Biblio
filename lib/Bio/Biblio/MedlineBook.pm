@@ -36,16 +36,11 @@ The main raison d'etre of this class is to be associated with MEDLINE book artic
 
 =head1 SEE ALSO
 
-=over 4
-
-=item *
-
-OpenBQS home page: http://www.ebi.ac.uk/~senger/openbqs/
-
-=item *
-
-Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
-
+=for :list
+* OpenBQS home page
+http://www.ebi.ac.uk/~senger/openbqs/
+* Comments to the Perl client
+http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
 =back
 
 =cut

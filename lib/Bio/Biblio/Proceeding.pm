@@ -31,26 +31,19 @@ http://www.ebi.ac.uk/~senger/openbqs/images/bibobjects_perl.gif
 There are no specific attributes in this class
 (however, you can set and get all attributes defined in the parent classes).
 
-=head1 SEE ALSO
-
-=over 4
-
-=item *
-
-OpenBQS home page: http://www.ebi.ac.uk/~senger/openbqs/
-
-=item *
-
-Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
-
-=back
-
 =head1 BUGS AND LIMITATIONS
 
 This class should be probably somewhere else in the class hierarchy
 because a proceeding is actrually a collection of resources. Perhaps
 this will be changed in the future.
 
+=head1 SEE ALSO
+
+=for :list
+* OpenBQS home page
+http://www.ebi.ac.uk/~senger/openbqs/
+* Comments to the Perl client
+http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
 =cut
 
 #

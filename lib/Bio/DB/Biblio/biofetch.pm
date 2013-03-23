@@ -36,14 +36,9 @@ L<Bio::DB::BiblioI>.
 
 =head1 BUGS AND LIMITATIONS
 
-=over 1
-
-=item *
-
-Only method get_by_id() is supported.
-
-=back
-
+=for :list
+*
+Only method get_by_id() is supported
 =cut
 
 # you can add your own here theoretically.
