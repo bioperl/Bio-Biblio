@@ -5,7 +5,7 @@ use utf8;
 
 =head1 NAME
 
-biblio-eutils-example.pl
+biblio-eutils.pl
 
 =head1 SYNOPSIS
 
