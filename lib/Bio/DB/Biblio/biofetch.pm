@@ -7,6 +7,9 @@ use Bio::Biblio::IO;
 use parent qw(Bio::DB::DBFetch Bio::Biblio);
 
 # ABSTRACT: a BioFetch-based access to a bibliographic citation retrieval
+# AUTHOR:   Heikki Lehvaslaiho <heikki@bioperl.org>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -30,21 +33,6 @@ references by their ID.
 
 The main documentation details are to be found in
 L<Bio::DB::BiblioI>.
-
-=head1 AUTHOR
-
-Heikki Lehvaslaiho (heikki-at-bioperl-dot-org)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =head1 BUGS AND LIMITATIONS
 

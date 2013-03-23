@@ -6,6 +6,9 @@ use warnings;
 use parent qw(Bio::Biblio::IO::medlinexml);
 
 # ABSTRACT: a converter of XML files with PUBMED citations
+# AUTHOR:   Martin Senger <senger@ebi.ac.uk>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -23,21 +26,6 @@ implementation of methods defined in I<Bio::Biblio::IO>.
 
 The main documentation details are to be found in
 L<Bio::Biblio::IO>.
-
-=head1 AUTHOR
-
-Martin Senger (senger@ebi.ac.uk)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =cut
 

@@ -6,6 +6,10 @@ use warnings;
 use parent qw(Bio::Biblio::BiblioBase);
 
 # ABSTRACT: representation of a journal
+# AUTHOR:   Martin Senger <senger@ebi.ac.uk>
+# AUTHOR:   Heikki Lehvaslaiho <heikki@bioperl.org>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -45,22 +49,6 @@ OpenBQS home page: http://www.ebi.ac.uk/~senger/openbqs/
 Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.html
 
 =back
-
-=head1 AUTHORS
-
-Heikki Lehvaslaiho (heikki-at-bioperl-dot-org),
-Martin Senger (senger@ebi.ac.uk)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =cut
 

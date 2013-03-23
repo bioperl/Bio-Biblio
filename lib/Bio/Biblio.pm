@@ -5,6 +5,9 @@ use warnings;
 use parent qw(Bio::Root::Root Bio::DB::BiblioI);
 
 # ABSTRACT: a bibliographic query service module
+# AUTHOR:   Martin Senger <martin.senger@gmail.com>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -117,21 +120,6 @@ A converter of MEDLINE citations in XML into Perl objects.
 A converter of PUBMED citations in XML into Perl objects.
 
 =back
-
-=head1 AUTHOR
-
-Martin Senger (martin.senger@gmail.com)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =head1 SEE ALSO
 

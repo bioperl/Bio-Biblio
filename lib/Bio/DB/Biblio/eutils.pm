@@ -9,6 +9,9 @@ use URI::Escape;
 use parent qw(Bio::Biblio Bio::DB::BiblioI);
 
 # ABSTRACT: access to PubMed's bibliographic query service
+# AUTHOR:   Allen Day <allenday@ucla.edu>
+# OWNER:    2004 Allen Day, University of California, Los Angeles
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -27,21 +30,6 @@ it through the I<Bio::Biblio> module:
 
 The main documentation details are to be found in
 L<Bio::DB::BiblioI>.
-
-=head1 AUTHOR
-
-Allen Day E<lt>allenday@ucla.eduE<gt>
-
-=head1 COPYRIGHT
-
-Copyright (c) 2004 Allen Day, University of California, Los Angeles.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =head1 BUGS AND LIMITATIONS
 

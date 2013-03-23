@@ -3,6 +3,9 @@ use utf8;
 
 # ABSTRACT: bioperl client for accessing and querying a bibliographic repository
 # PODNAME:  bp_biblio
+# AUTHOR:   Martin Senger <martin.senger@gmail.com>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 use strict;
 use warnings;
@@ -441,10 +444,6 @@ remote HTTP targets via a proxy server.  For example:
 
   export HTTPPROXY=http://128.243.220.41:3128
   bp_biblio.pl -c
-
-=head1 AUTHOR - Martin Senger
-
-Email martin.senger@gmail.com
 
 =head1 HISTORY
 

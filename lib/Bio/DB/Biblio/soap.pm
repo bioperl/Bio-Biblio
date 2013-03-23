@@ -14,6 +14,9 @@ use SOAP::Lite on_fault => sub {
 use parent qw(Bio::Biblio);
 
 # ABSTRACT: a SOAP-based access to a bibliographic query service
+# AUTHOR:   Martin Senger <martin.senger@gmail.com>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -32,21 +35,6 @@ bibliographic repository.
 
 The main documentation details are to be found in
 L<Bio::DB::BiblioI>.
-
-=head1 AUTHOR
-
-Martin Senger (martin.senger@gmail.com)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =head1 BUGS AND LIMITATIONS
 

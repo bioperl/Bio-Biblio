@@ -6,6 +6,9 @@ use warnings;
 use parent qw(Bio::Root::RootI);
 
 # ABSTRACT: an interface to a Bibliographic Query Service
+# AUTHOR:   Martin Senger <martin.senger@gmail.com>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -25,21 +28,6 @@ objects using I<Bio::Biblio::IO>.
 The interface complies (with some simplifications) with the
 specification described in the B<OpenBQS> project. Its home page is at
 http://www.ebi.ac.uk/~senger/openbqs/.
-
-=head1 AUTHOR
-
-Martin Senger (martin.senger@gmail.com)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =cut
 

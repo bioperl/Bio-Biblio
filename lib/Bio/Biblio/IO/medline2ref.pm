@@ -12,6 +12,9 @@ use Bio::Biblio::Organisation;
 use parent qw(Bio::Root::Root);
 
 # ABSTRACT: a converter of a raw hash to MEDLINE citations
+# AUTHOR:   Martin Senger <senger@ebi.ac.uk>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -20,21 +23,6 @@ use parent qw(Bio::Root::Root);
 =head1 DESCRIPTION
 
  # to be written
-
-=head1 AUTHOR
-
-Martin Senger (senger@ebi.ac.uk)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =cut
 

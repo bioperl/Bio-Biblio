@@ -6,6 +6,9 @@ use warnings;
 use parent qw(Bio::Root::Root);
 
 # ABSTRACT: an abstract base for other biblio classes
+# AUTHOR:   Martin Senger <senger@ebi.ac.uk>
+# OWNER:    2002 European Bioinformatics Institute
+# LICENSE:  Perl_5
 
 =head1 SYNOPSIS
 
@@ -38,21 +41,6 @@ If there is a need for new attributes, create your own class which
 usually inherits from I<Bio::Biblio::Ref>. For new types of providers
 and journals, let your class inherit directly from this
 I<Bio::Biblio::BiblioBase> class.
-
-=head1 AUTHOR
-
-Martin Senger (senger@ebi.ac.uk)
-
-=head1 COPYRIGHT
-
-Copyright (c) 2002 European Bioinformatics Institute. All Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 DISCLAIMER
-
-This software is provided "as is" without warranty of any kind.
 
 =cut
 
