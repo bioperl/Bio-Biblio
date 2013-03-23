@@ -25,6 +25,8 @@ use parent qw(Bio::Biblio::IO::medline2ref);
 #   Here is the core...
 #
 # ---------------------------------------------------------------------
+=internal _load_instance
+=cut
 
 sub _load_instance {
     my ($self, $source) = @_;
@@ -45,6 +47,9 @@ sub _load_instance {
     $result = $self->_new_instance ('Bio::Biblio::Ref') unless defined $result;
     return $result;
 }
+
+=method convert
+=cut
 
 sub convert {
     my ($self, $source) = @_;

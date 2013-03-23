@@ -42,6 +42,9 @@ our %POP_OBJ_AND_PEEK_OBJ;
 our %POP_AND_ADD_ELEMENT;
 our %POP_AND_ADD_DATA_ELEMENT;
 
+=internal _initialize
+=cut
+
 sub _initialize {
     my ($self, @args) = @_;
 
@@ -95,7 +98,8 @@ sub _initialize {
     }
 }
 
-# -----------------------------------------------------------------------------
+=internal _parse
+=cut
 
 sub _parse {
     my ($self) = shift;
@@ -147,6 +151,9 @@ $Callback = undef;
 $Convert = undef;
 @ObjectStack = ();   # it has Hash-Ref elements
 @PCDataStack = ();   # it has String elements
+
+=method next_bibref
+=cut
 
 sub next_bibref {
    my ($self) = @_;
@@ -371,16 +378,25 @@ sub next_bibref {
                         'MeshHeading' => 'meshHeadings',
                         );
 
+=func handle_doc_start
+=cut
+
 sub handle_doc_start {
     @Citations = ();
     @ObjectStack = ();
     @PCDataStack = ();
 }
 
+=func handle_doc_end
+=cut
+
 sub handle_doc_end {
     undef @ObjectStack;
     undef @PCDataStack;
 }
+
+=func handle_char
+=cut
 
 sub handle_char {
     my ($expat, $str) = @_;
@@ -392,6 +408,9 @@ sub handle_char {
 
     $PCDataStack [$#PCDataStack] .= $str;
 }
+
+=func handle_start
+=cut
 
 sub handle_start {
     my ($expat, $e, %attrs) = @_;
@@ -493,6 +512,9 @@ sub handle_start {
 #       push (@ObjectStack, { 'type' => 'Abstract' });
     }
 }
+
+=func handle_end
+=cut
 
 sub handle_end {
     my ($expat, $e) = @_;
@@ -616,7 +638,11 @@ sub handle_end {
 
 }
 
-# what to do when we have the whole $citation ready
+=internal _process_citation
+
+What to do when we have the whole $citation ready
+=cut
+
 sub _process_citation {
     my ($citation) = @_;
     $citation = $Convert->convert ($citation) if defined $Convert;
@@ -628,8 +654,12 @@ sub _process_citation {
     }
 }
 
-# add $element into an array named $key to the top object at @ObjectStack;
-# if $element is empty, take it from @PCDataStack
+=internal _add_element
+
+Add $element into an array named $key to the top object at @ObjectStack;
+if $element is empty, take it from @PCDataStack
+=cut
+
 sub _add_element {
     my ($key, $element) = @_;
     my $peek = $ObjectStack[$#ObjectStack];
@@ -637,14 +667,22 @@ sub _add_element {
     push (@{ $$peek{$key} }, (defined $element ? $element : pop @PCDataStack));
 }
 
-# remove top of @PCDataStack and put it into top object at @ObjectStack under name $key
+=internal _data2obj
+
+Remove top of @PCDataStack and put it into top object at @ObjectStack under name $key
+=cut
+
 sub _data2obj {
     my ($key) = @_;
     my $peek = $ObjectStack[$#ObjectStack];
     $$peek{$key} = pop @PCDataStack;
 }
 
-# remove top of @ObjectStack and put it into now-top at @ObjectStack under name $key
+=internal _obj2obj
+
+Remove top of @ObjectStack and put it into now-top at @ObjectStack under name $key
+=cut
+
 sub _obj2obj {
     my ($key) = @_;
     my $p = pop @ObjectStack;
@@ -652,15 +690,21 @@ sub _obj2obj {
     $$peek{$key} = $p;
 }
 
-# check if a $key exists in a ref-hash $rh and if it is equal to $value
+=internal _eq_hash_elem
+
+Check if a $key exists in a ref-hash $rh and if it is equal to $value
+=cut
+
 sub _eq_hash_elem {
     my ($rh, $key, $value) = @_;
     return (defined $$rh{$key} and $$rh{$key} eq $value);
 }
 
-#
-# --- only for debugging
-#
+=internal _debug_object_stack
+
+--- only for debugging
+=cut
+
 our %DEBUGSTACK = ();
 sub _debug_object_stack {
     my ($action, $element) = @_;

@@ -26,6 +26,9 @@ use parent qw(Bio::Root::Root);
 
 =cut
 
+=method new
+=cut
+
 sub new {
     my ($caller, @args) = @_;
     my $class = ref ($caller) || $caller;
@@ -55,6 +58,9 @@ sub new {
 #
 # ---------------------------------------------------------------------
 
+=internal _load_instance
+=cut
+
 sub _load_instance {
     my ($self, $source) = @_;
 
@@ -78,6 +84,9 @@ sub _load_instance {
     $result = $self->_new_instance ('Bio::Biblio::Ref') unless defined $result;
     return $result;
 }
+
+=method convert
+=cut
 
 sub convert {
    my ($self, $source) = @_;
@@ -229,8 +238,12 @@ sub convert {
    return $result;
 }
 
-# load a module (given as a real module name, e.g. 'Bio::Biblio::MedlineJournalArticle'),
-# call new() method on it, and return the instance returned by the new() method
+=internal _new_instance
+
+Load a module (given as a real module name, e.g. 'Bio::Biblio::MedlineJournalArticle'),
+call new() method on it, and return the instance returned by the new() method
+=cut
+
 sub _new_instance {
     my ($self, $module) = @_;
     my ($filename);
@@ -240,14 +253,17 @@ sub _new_instance {
     return $module->new;
 }
 
-#
-# see OpenBQS specification (http://www.ebi.ac.uk/~senger/openbqs/) how
-# a date should be coded;
-# TBD: this can be improved - checking is missing, timezones,
-#      converting to UTC...
-# Also note that this routine does not convert 'medline_date' - it
-# is stored in a separate attribute without ant conversion.
-#
+
+=internal _convert_date
+
+See OpenBQS specification (http://www.ebi.ac.uk/~senger/openbqs/) how
+a date should be coded;
+TBD: this can be improved - checking is missing, timezones,
+     converting to UTC...
+Also note that this routine does not convert 'medline_date' - it
+is stored in a separate attribute without ant conversion.
+=cut
+
 sub _convert_date {
     my ($date) = @_;
     return unless
@@ -281,8 +297,12 @@ sub _convert_date {
     return $converted;
 }
 
-# $person is a hash with persons attributes - we need to create and
-# return a Bio::Biblio::Person object
+=internal _convert_personal_name
+
+$person is a hash with persons attributes - we need to create and
+return a Bio::Biblio::Person object
+=cut
+
 sub _convert_personal_name {
     my ($person) = @_;
     foreach my $key (keys %$person) {
@@ -292,11 +312,14 @@ sub _convert_personal_name {
     Bio::Biblio::Person->new(%$person);
 }
 
-#
-# takes journal article related attributes from $article and convert
-# them into $result and at the end call _convert_article (which is
-# shared with book article)
-#
+=internal _convert_journal_article
+
+
+Takes journal article related attributes from $article and convert
+them into $result and at the end call _convert_article (which is
+shared with book article)
+=cut
+
 sub _convert_journal_article {
     my ($result, $source) = @_;
     my $article = $$source{'article'};
@@ -338,11 +361,13 @@ sub _convert_journal_article {
     &_convert_article ($result, $source);
 }
 
-#
-# takes book article related attributes from $article and convert
-# them into $result and at the end call _convert_article (which is
-# shared with journal article)
-#
+=internal _convert_book_article
+
+Takes book article related attributes from $article and convert
+them into $result and at the end call _convert_article (which is
+shared with journal article)
+=cut
+
 sub _convert_book_article {
     my ($result, $source) = @_;
     my $article = $$source{'article'};
@@ -378,11 +403,13 @@ sub _convert_book_article {
     &_convert_article ($result, $source);
 }
 
-#
-# takes from $source article related attributes and convert them into
-# $article (these attributes are the same both for journal and book
-# articles
-#
+=internal _convert_article
+
+Takes from $source article related attributes and convert them into
+$article (these attributes are the same both for journal and book
+articles
+=cut
+
 sub _convert_article {
     my ($article, $source) = @_;
     my $from_article = $$source{'article'};
@@ -454,10 +481,12 @@ sub _convert_article {
 
 }
 
-#
-# takes a ref-array of providers - they can be persons or
-# organisations, and returns an array of converted providers
-#
+=internal _convert_providers
+
+Takes a ref-array of providers - they can be persons or
+organisations, and returns an array of converted providers
+=cut
+
 sub _convert_providers {
     my ($providers) = @_;
     return () unless defined $providers;

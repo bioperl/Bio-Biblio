@@ -166,6 +166,9 @@ Comments to the Perl client: http://www.ebi.ac.uk/~senger/openbqs/Client_perl.ht
 
 my $entry = 0;
 
+=method new
+=cut
+
 sub new {
     my ($caller, @args) = @_;
     my $class = ref ($caller) || $caller;
@@ -199,12 +202,17 @@ sub new {
     }
 }
 
+=method newFh
+=cut
+
 sub newFh {
     my $class = shift;
     return unless my $self = $class->new(@_);
     return $self->fh;
 }
 
+=attr fh
+=cut
 
 sub fh {
     my $self = shift;
@@ -215,6 +223,9 @@ sub fh {
 }
 
 # _initialize is chained for all Bio::Biblio::IO classes
+
+=internal _initialize
+=cut
 
 sub _initialize {
     my ($self, @args) = @_;
@@ -297,16 +308,25 @@ sub _guess_format {
     return;
 }
 
+=method DESTROY
+=cut
+
 sub DESTROY {
     my $self = shift;
 
     $self->close();
 }
 
+=method TIEHANDLE
+=cut
+
 sub TIEHANDLE {
     my ($class,$val) = @_;
     return bless {'biblio' => $val}, $class;
 }
+
+=method READLINE
+=cut
 
 sub READLINE {
     my $self = shift;

@@ -20,13 +20,6 @@ It is a base class where all other biblio data storage classes inherit
 from. It does not reflect any real-world object, it exists only for
 convenience, in order to have a place for shared code.
 
-=head2 new()
-
-The I<new()> class method constructs a new biblio storage object.  It
-accepts list of named arguments - the same names as attribute names
-prefixed with a minus sign. Available attribute names are listed in
-the documentation of the individual biblio storage objects.
-
 =head2 Accessors
 
 All attribute names can be used as method names. When used without any
@@ -46,14 +39,25 @@ I<Bio::Biblio::BiblioBase> class.
 
 our $AUTOLOAD;
 
-# these methods should not be called here;
-# they should be implemented by a subclass
+=internal _accessible
+
+This method should not be called here; it should be implemented by a subclass
+=cut
+
 sub _accessible { shift->throw_not_implemented(); }
+
+=internal _attr_type
+
+This method should not be called here; it should be implemented by a subclass
+=cut
+
 sub _attr_type { shift->throw_not_implemented(); }
 
-#
-# deal with 'set_' and 'get_' methods
-#
+=internal AUTOLOAD
+
+Deal with 'set_' and 'get_' methods
+=cut
+
 sub AUTOLOAD {
     my ($self, $newval) = @_;
     if ($AUTOLOAD =~ /.*::(\w+)/ && $self->_accessible ("_$1")) {
@@ -85,7 +89,13 @@ sub AUTOLOAD {
     $self->throw ("No such method: $AUTOLOAD");
 }
 
-#
+=method new
+
+The I<new()> class method constructs a new biblio storage object.  It
+accepts list of named arguments - the same names as attribute names
+prefixed with a minus sign. Available attribute names are listed in
+the documentation of the individual biblio storage objects.
+=cut
 
 sub new {
     my ($caller, @args) = @_;
@@ -112,10 +122,12 @@ sub new {
     return $self;
 }
 
-#
-# set methods test whether incoming value is of a correct type;
-# here we return message explaining it
-#
+=internal _wrong_type_msg
+
+Set methods test whether incoming value is of a correct type;
+here we return message explaining it
+=cut
+
 sub _wrong_type_msg {
     my ($self, $given_type, $expected_type, $method) = @_;
     my $msg = 'In method ';
@@ -127,10 +139,12 @@ sub _wrong_type_msg {
     return ("$msg: Trying to set a value of type '$given_type' but '$expected_type' is expected.");
 }
 
-#
-# probably just for debugging
-# TBD: to decide...
-#
+=internal print_me
+
+Probably just for debugging
+TBD: to decide...
+=cut
+
 sub print_me {
     my ($self) = @_;
     require Data::Dumper;

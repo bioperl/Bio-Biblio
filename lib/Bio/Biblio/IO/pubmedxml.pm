@@ -34,6 +34,9 @@ our %SIMPLE_TREATMENT;
 our %POP_DATA_AND_PEEK_OBJ;
 our %POP_AND_ADD_DATA_ELEMENT;
 
+=internal _initialize
+=cut
+
 sub _initialize {
     my ($self, @args) = @_;
 
@@ -135,6 +138,9 @@ sub _initialize {
      'History' => 'histories',
      );
 
+=func handle_start
+=cut
+
 sub handle_start {
     my ($expat, $e, %attrs) = @_;
 #    &Bio::Biblio::IO::medlinexml::_debug_object_stack ("START", $e);
@@ -182,6 +188,9 @@ sub handle_start {
         &Bio::Biblio::IO::medlinexml::handle_start ($expat, $e, %attrs);
     }
 }
+
+=func handle_end
+=cut
 
 sub handle_end {
     my ($expat, $e) = @_;
