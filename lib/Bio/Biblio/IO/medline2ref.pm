@@ -1,4 +1,5 @@
 package Bio::Biblio::IO::medline2ref;
+
 use utf8;
 use strict;
 use warnings;

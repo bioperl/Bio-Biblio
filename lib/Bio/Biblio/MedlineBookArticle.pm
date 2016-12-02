@@ -1,4 +1,5 @@
 package Bio::Biblio::MedlineBookArticle;
+
 use utf8;
 use strict;
 use warnings;

@@ -1,4 +1,5 @@
 package Bio::Biblio::PubmedArticle;
+
 use utf8;
 use strict;
 use warnings;

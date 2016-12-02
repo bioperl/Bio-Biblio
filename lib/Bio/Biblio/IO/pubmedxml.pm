@@ -1,4 +1,5 @@
 package Bio::Biblio::IO::pubmedxml;
+
 use utf8;
 use strict;
 use warnings;
