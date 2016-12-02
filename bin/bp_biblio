@@ -46,7 +46,6 @@ use Data::Dumper;      # to print resulting data in a raw form
 # --- print version and exit
 if ($opt_v) {
     print "$Bio::Biblio::VERSION\n";
-    print "$Bio::Biblio::Revision\n";
     exit 0;
 }
 
