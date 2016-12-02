@@ -2,9 +2,9 @@
 use utf8;
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 8;
 
-BEGIN { use_ok("Bio::Biblio"); }
+BEGIN { use_ok("Bio::Biblio"); use_ok("Bio::Biblio::IO"); }
 
 my $db = Bio::Biblio->new(-access => "eutils");
 ok (defined ($db) && ref ($db) eq "Bio::DB::Biblio::eutils");
@@ -16,3 +16,15 @@ $db->find($search);
 my $ct = 0;
 $ct++ while (my $xml = $db->get_next);
 cmp_ok ($ct, ">=", 4);
+
+my $biblio = Bio::Biblio->new( -access => 'eutils' );
+ok (defined $biblio);
+
+ok (! $biblio->count);
+$biblio->find("12368254");
+is ($biblio->count, 1);
+
+my $io = Bio::Biblio::IO->new( -data => $biblio->get_next,
+                               -format => 'medlinexml' );
+my $article = $io->next_bibref();
+is ($article->identifier, "12368254");
