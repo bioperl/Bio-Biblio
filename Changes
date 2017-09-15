@@ -2,6 +2,8 @@ Summary of important user-visible changes for Bio-Biblio
 --------------------------------------------------------
 
 {{$NEXT}}
+  * Tests that require an internet connection will be skipped if the
+    environment variable NO_NETWORK_TESTING is set.
 
 1.70      2013-03-24 00:18:00 Europe/Dublin
   * First release after split from bioperl-live.

@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::RequiresInternet;
 
 use Bio::Biblio;
 use Bio::Biblio::IO;
