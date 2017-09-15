@@ -1,13 +1,14 @@
-## test script for Bio::Biblio and Bio::Biblio::IO
+#!/usr/bin/env perl
+
 use utf8;
 use strict;
 use warnings;
-use File::Spec;
 
+use File::Spec;
 use Test::More;
 
-BEGIN { use_ok("Bio::Biblio"); }
-BEGIN { use_ok("Bio::Biblio::IO"); }
+use Bio::Biblio;
+use Bio::Biblio::IO;
 
 my $tfile_medline = File::Spec->catfile('t', 'data', 'stress_test_medline.xml');
 my $tfile_pubmed  = File::Spec->catfile('t', 'data', 'stress_test_pubmed.xml');

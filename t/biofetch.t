@@ -1,10 +1,12 @@
-## test script for Bio::DB::Biblio::biofetch
+#!/usr/bin/env perl
+
 use utf8;
 use strict;
 use warnings;
+
 use Test::More;
 
-BEGIN { use_ok("Bio::Biblio"); }
+use Bio::Biblio;
 
 my $db = Bio::Biblio->new(-access => 'biofetch');
 ok (defined ($db) && ref ($db) eq "Bio::DB::Biblio::biofetch");

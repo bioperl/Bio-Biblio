@@ -1,10 +1,12 @@
-## test script for Bio::Biblio::*
+#!/usr/bin/env perl
+
 use utf8;
 use strict;
 use warnings;
-use Bio::Annotation::DBLink;
 
 use Test::More;
+
+use Bio::Annotation::DBLink;
 
 my @modules;
 

@@ -1,10 +1,13 @@
-## test script for Bio::DB::Biblio::eutils
+#!/usr/bin/env perl
+
 use utf8;
 use strict;
 use warnings;
+
 use Test::More;
 
-BEGIN { use_ok("Bio::Biblio"); use_ok("Bio::Biblio::IO"); }
+use Bio::Biblio;
+use Bio::Biblio::IO;
 
 my $db = Bio::Biblio->new(-access => "eutils");
 ok (defined ($db) && ref ($db) eq "Bio::DB::Biblio::eutils");
