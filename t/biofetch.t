@@ -9,7 +9,7 @@ use Test::More;
 use Bio::Biblio;
 
 my $db = Bio::Biblio->new(-access => 'biofetch');
-ok (defined ($db) && ref ($db) eq "Bio::DB::Biblio::biofetch");
+isa_ok ($db, "Bio::DB::Biblio::biofetch");
 
 my $ref;
 my @ids;

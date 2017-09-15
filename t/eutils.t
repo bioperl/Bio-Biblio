@@ -10,7 +10,7 @@ use Bio::Biblio;
 use Bio::Biblio::IO;
 
 my $db = Bio::Biblio->new(-access => "eutils");
-ok (defined ($db) && ref ($db) eq "Bio::DB::Biblio::eutils");
+isa_ok ($db, "Bio::DB::Biblio::eutils");
 
 ## these aren't exactly the most stringent of tests
 my $search = '"Day A"[AU] AND ("Database Management Systems"[MH] OR "Databases,'.

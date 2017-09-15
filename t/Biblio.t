@@ -14,7 +14,7 @@ my $tfile_medline = File::Spec->catfile('t', 'data', 'stress_test_medline.xml');
 my $tfile_pubmed  = File::Spec->catfile('t', 'data', 'stress_test_pubmed.xml');
 
 my $biblio = Bio::Biblio->new(-location => 'http://localhost:4567');
-ok (defined ($biblio));
+isa_ok ($biblio, "Bio::Biblio");
 
 my $io;
 
@@ -24,7 +24,9 @@ my $io;
 $io = Bio::Biblio::IO->new('-format' => 'medlinexml',
                            '-file'   => $tfile_medline,
                            '-result' => 'raw');
-ok (defined ($io));
+isa_ok ($io, "Bio::Biblio::IO");
+isa_ok ($io, "Bio::Biblio::IO::medlinexml");
+
 is ($io->next_bibref->{'medlineID'}, 'Text1',   'citation 1');
 is ($io->next_bibref->{'medlineID'}, 'Text248', 'citation 2');
 is ($io->next_bibref->{'medlineID'}, 'Text495', 'citation 3');
@@ -78,7 +80,9 @@ is ($io->next_bibref->identifier, 'hgfedcba', 'citation 2');
 ##
 $io = Bio::Biblio::IO->new('-format' => 'pubmedxml',
                            '-file'   => $tfile_pubmed);
-ok (defined ($io));
+isa_ok ($io, "Bio::Biblio::IO");
+isa_ok ($io, "Bio::Biblio::IO::pubmedxml");
+
 is ($io->next_bibref->identifier, '11223344', 'citation 1');
 is ($io->next_bibref->identifier, '21583752', 'citation 2');
 is ($io->next_bibref->identifier, '21465135', 'citation 3');
