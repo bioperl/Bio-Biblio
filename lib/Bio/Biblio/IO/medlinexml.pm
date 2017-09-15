@@ -3,6 +3,7 @@ package Bio::Biblio::IO::medlinexml;
 use utf8;
 use strict;
 use warnings;
+
 use XML::Parser;
 
 use parent qw(Bio::Biblio::IO);
@@ -84,7 +85,8 @@ sub _initialize {
                                                             Start => \&handle_start,
                                                             End   => \&handle_end,
                                                             Char  => \&handle_char,
-                                                            Final => \&handle_doc_end})
+                                                            Final => \&handle_doc_end},
+                                               ErrorContext => 3)
         unless $self->{'_xml_parser'};
 
     # if there is an argument '-callback' then start parsing at once -
