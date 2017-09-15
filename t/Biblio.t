@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use File::Spec;
 
-use Test::More tests => 24;
+use Test::More;
 
 BEGIN { use_ok("Bio::Biblio"); }
 BEGIN { use_ok("Bio::Biblio::IO"); }
@@ -89,3 +89,5 @@ $io = Bio::Biblio::IO->newFh('-format' => 'pubmedxml',
                              '-file'   => $tfile_pubmed,
                              '-result' => 'pubmed2ref');
 is ($_->identifier, shift (@expvals), 'filehandle test') while (<$io>);
+
+done_testing();

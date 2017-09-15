@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Bio::Annotation::DBLink;
 
-use Test::More tests => 537;
+use Test::More;
 
 my @modules;
 
@@ -525,3 +525,5 @@ for (my $i = 0; $i < @args; $i += 2) {
 foreach my $method (@other_methods_for_pubmedarticle) {
     is $citation->$method(), undef, "get '$method'";
 }
+
+done_testing();

@@ -2,7 +2,7 @@
 use utf8;
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More;
 
 BEGIN { use_ok("Bio::Biblio"); }
 
@@ -25,3 +25,5 @@ is ($ref->next_bibref->identifier, $_) for (@ids);
 $ref = $db->get_Stream_by_id(\@ids);
 ok (defined ($ref));
 is ($ref->next_bibref->identifier, $_) for (@ids);
+
+done_testing();

@@ -2,7 +2,7 @@
 use utf8;
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More;
 
 BEGIN { use_ok("Bio::Biblio"); use_ok("Bio::Biblio::IO"); }
 
@@ -28,3 +28,5 @@ my $io = Bio::Biblio::IO->new( -data => $biblio->get_next,
                                -format => 'medlinexml' );
 my $article = $io->next_bibref();
 is ($article->identifier, "12368254");
+
+done_testing();
