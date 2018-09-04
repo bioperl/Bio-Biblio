@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 use utf8;
 
 # ABSTRACT: bioperl client for accessing and querying a bibliographic repository
