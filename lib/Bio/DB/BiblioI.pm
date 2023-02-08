@@ -315,7 +315,7 @@ sub destroy { shift->throw_not_implemented; }
            of a controlled vocabulary
  Args    : none
 
-The controlled vocabularies allow to introspect bibliographic
+The controlled vocabularies allow one to introspect bibliographic
 repositories and to find what citation resource types (such as journal
 and book articles, patents or technical reports) are provided by the
 repository, what attributes they have, eventually what attribute
