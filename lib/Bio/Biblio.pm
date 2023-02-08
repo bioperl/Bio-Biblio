@@ -164,7 +164,7 @@ lower-level object.
 
 This method can also be used for I<cloning> an existing object and
 changing or adding new attributes to it in the same time. This is,
-however, not particulary useful for the casual users of this module,
+however, not particularly useful for the casual users of this module,
 because the query methods (see L<Bio::DB::BiblioI>) themselves
 already return cloned objects with more refined query
 collections. Anyway this is how the cloning can be done:

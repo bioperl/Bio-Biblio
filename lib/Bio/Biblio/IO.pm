@@ -104,7 +104,7 @@ citations can be read by calling repeatedly method I<next_bibref>:
 However, this may imply that all citations were already read into the
 memory. If you expect a huge amount of citations to be read, you may
 choose a I<callback> option. Your subroutine is specified in the
-C<new()> method and is called everytime a new citation is available
+C<new()> method and is called every time a new citation is available
 (see an example above in SYNOPSIS).
 
 The citations returned by I<next_bibref> or given to your callback
